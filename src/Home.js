@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import logo from './react.svg';
-import './Home.css';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import logo from './react.svg'
+import { Link } from 'react-router-dom'
 
 class Home extends Component {
   static async getInitialProps({ req, res, match, history, location, ...ctx }) {
-    return { whatever: 'stuff' };
+    return { whatever: 'stuff' }
   }
 
   render() {
@@ -21,8 +20,8 @@ class Home extends Component {
         </p>
         <Link to="/about">About -></Link>
       </div>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home
