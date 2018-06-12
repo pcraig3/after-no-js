@@ -1,0 +1,7 @@
+{
+  "semi": false,
+  "parser": "babylon",
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+
