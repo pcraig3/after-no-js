@@ -1,6 +1,6 @@
 {
-  "name": "razzle-examples-with-afterjs",
-  "version": "2.1.0",
+  "name": "after-no-js",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "start": "razzle start",
@@ -10,11 +10,17 @@
   },
   "dependencies": {
     "@jaredpalmer/after": "latest",
+    "emotion": "^9.2.3",
+    "emotion-server": "^9.2.3",
     "express": "^4.16.2",
     "razzle": "^2.1.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.4.0",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-plugin-emotion": "^9.2.0",
+    "react-emotion": "^9.2.3"
   }
 }
