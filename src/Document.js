@@ -1,6 +1,5 @@
 import React from 'react'
 import { AfterRoot, AfterData } from '@jaredpalmer/after'
-import { Helmet } from 'react-helmet'
 
 class Document extends React.Component {
   static async getInitialProps({ assets, data, renderPage }) {

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { css } from 'react-emotion'
 import { Helmet } from 'react-helmet'
+import Box from './Box'
+import Layout from './Layout'
 
 const about = css`
   font-size: 5em;
-  color: red;
+  color: #cd0000;
 `
 
 class About extends Component {
@@ -15,12 +17,17 @@ class About extends Component {
 
   render() {
     return (
-      <div className={about}>
-        <Helmet>
-          <title>ABOUT - {this.props.stuff ? 'WITH STUFF' : 'NO STUFF'}</title>
-        </Helmet>
-        about {this.props.stuff ? 'with stuff' : 'no stuff'}
-      </div>
+      <Layout>
+        <div className={about}>
+          <Helmet>
+            <title>
+              ABOUT - {this.props.stuff ? 'WITH STUFF' : 'NO STUFF'}
+            </title>
+          </Helmet>
+          about {this.props.stuff ? 'with stuff' : 'no stuff'}
+          <Box />
+        </div>
+      </Layout>
     )
   }
 }
