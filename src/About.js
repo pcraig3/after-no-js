@@ -7,8 +7,17 @@ const about = css`
 `
 
 class About extends Component {
+  static async getInitialProps({ req, res, match }) {
+    const stuff = true
+    return { stuff }
+  }
+
   render() {
-    return <div className={about}>about</div>
+    return (
+      <div className={about}>
+        about {this.props.stuff ? 'with stuff' : 'no stuff'}
+      </div>
+    )
   }
 }
 
