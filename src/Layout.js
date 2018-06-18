@@ -1,5 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { injectGlobal } from 'emotion'
+import { ThemeContext, themes } from './theme'
 
 injectGlobal`
   html, body {
@@ -9,6 +11,32 @@ injectGlobal`
   }
 `
 
-const Layout = ({ children }) => <main>{children}</main>
+class Layout extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      theme: themes.light,
+    }
+
+    this.toggleTheme = () => {
+      this.setState(state => ({
+        theme: state.theme === themes.dark ? themes.light : themes.dark,
+      }))
+    }
+  }
+
+  render() {
+    return (
+      <main>
+        <ThemeContext.Provider value={this.state.theme}>
+          {this.props.children}
+        </ThemeContext.Provider>
+      </main>
+    )
+  }
+}
+Layout.propTypes = {
+  children: PropTypes.any.isRequired,
+}
 
 export default Layout
