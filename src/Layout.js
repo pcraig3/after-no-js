@@ -14,14 +14,19 @@ injectGlobal`
 class Layout extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      theme: themes.light,
+    this.switchTheme = themeName => {
+      if (themes[themeName]) {
+        this.setState(state => ({
+          theme: { theme: themes[themeName] },
+        }))
+      }
     }
 
-    this.toggleTheme = () => {
-      this.setState(state => ({
-        theme: state.theme === themes.dark ? themes.light : themes.dark,
-      }))
+    this.state = {
+      theme: {
+        f: this.switchTheme,
+        theme: themes.light,
+      },
     }
   }
 
