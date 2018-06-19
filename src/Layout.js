@@ -17,10 +17,13 @@ class Layout extends React.Component {
   constructor(props) {
     super(props)
 
-    this.switchTheme = themeName => {
+    this.switchThemeName = themeName => {
       if (themes[themeName]) {
         this.setState(state => ({
-          theme: { theme: themes[themeName], f: state.theme.f },
+          theme: {
+            theme: themes[themeName],
+            switchTheme: state.theme.switchTheme,
+          },
         }))
       }
     }
@@ -33,7 +36,7 @@ class Layout extends React.Component {
 
     this.state = {
       theme: {
-        f: this.switchTheme,
+        switchTheme: this.switchThemeName,
         theme: initTheme,
       },
     }

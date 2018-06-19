@@ -15,8 +15,23 @@ const form = css`
 `
 
 class Form extends Component {
+  constructor(props) {
+    super(props)
+    this.handleChangeRadio = this.handleChangeRadio.bind(this)
+
+    this.state = {
+      themeName: props.theme.theme.name,
+    }
+  }
+
+  handleChangeRadio(e) {
+    this.setState({
+      themeName: e.target.value,
+    })
+  }
+
   render() {
-    const { theme, f } = this.props.theme
+    const { switchTheme } = this.props.theme
 
     return (
       <form className={form}>
@@ -30,8 +45,8 @@ class Form extends Component {
               type="radio"
               name="theme"
               value="dark"
-              onChange={e => f(e.target.value)}
-              checked={theme.name === 'dark'}
+              onChange={this.handleChangeRadio}
+              checked={this.state.themeName === 'dark'}
             />
           </label>
           <label>
@@ -39,12 +54,28 @@ class Form extends Component {
               type="radio"
               name="theme"
               value="light"
-              onChange={e => f(e.target.value)}
-              checked={theme.name === 'light'}
+              onChange={this.handleChangeRadio}
+              checked={this.state.themeName === 'light'}
+            />
+          </label>
+          <label>
+            MONOCHROME<input
+              type="radio"
+              name="theme"
+              value="monochrome"
+              onChange={this.handleChangeRadio}
+              checked={this.state.themeName === 'monochrome'}
             />
           </label>
         </fieldset>
-        {/* <button>submit</button> */}
+        <button
+          onClick={e => {
+            e.preventDefault()
+            switchTheme(this.state.themeName)
+          }}
+        >
+          submit
+        </button>
       </form>
     )
   }
