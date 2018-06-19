@@ -1,25 +1,23 @@
 import React, { Component } from 'react'
-import logo from './react.svg'
-import { Link } from 'react-router-dom'
+import Layout from './Layout'
+import Box from './Box'
 
 class Home extends Component {
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
-    return { whatever: 'stuff' }
-  }
-
   render() {
     return (
-      <div className="Home">
-        <div className="Home-header">
-          <img src={logo} className="Home-logo" alt="logo" />
-          <h2>Welcome to After.js</h2>
+      <Layout>
+        <div className="Home">
+          <div className="Home-header">
+            <Box>
+              <h1>Welcome to After.js</h1>
+            </Box>
+          </div>
+          <p className="Home-intro">
+            To get started, edit <code>src/Home.js</code> or{' '}
+            <code>src/About.js</code> and save to reload.
+          </p>
         </div>
-        <p className="Home-intro">
-          To get started, edit <code>src/Home.js</code> or{' '}
-          <code>src/About.js</code>and save to reload.
-        </p>
-        <Link to="/about">About -></Link>
-      </div>
+      </Layout>
     )
   }
 }

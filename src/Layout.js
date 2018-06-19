@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { injectGlobal } from 'emotion'
+import { Link } from 'react-router-dom'
 import { ThemeContext, themes } from './theme'
 
 injectGlobal`
@@ -8,6 +9,7 @@ injectGlobal`
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 24px;
   }
 `
 
@@ -17,7 +19,7 @@ class Layout extends React.Component {
     this.switchTheme = themeName => {
       if (themes[themeName]) {
         this.setState(state => ({
-          theme: { theme: themes[themeName] },
+          theme: { theme: themes[themeName], f: state.theme.f },
         }))
       }
     }
@@ -25,7 +27,7 @@ class Layout extends React.Component {
     this.state = {
       theme: {
         f: this.switchTheme,
-        theme: themes.light,
+        theme: themes.dark,
       },
     }
   }
@@ -33,6 +35,10 @@ class Layout extends React.Component {
   render() {
     return (
       <main>
+        <nav>
+          <Link to="/">Home</Link> <Link to="/about">About</Link>{' '}
+          <Link to="/form">Form</Link>
+        </nav>
         <ThemeContext.Provider value={this.state.theme}>
           {this.props.children}
         </ThemeContext.Provider>

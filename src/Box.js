@@ -8,7 +8,7 @@ const Box = ({ children, theme: { theme } }) => (
       backgroundColor: theme.background,
     }}
   >
-    {theme.name}
+    {children ? children : theme.name}
   </div>
 )
 

@@ -5,7 +5,6 @@ import Box from './Box'
 import Layout from './Layout'
 
 const about = css`
-  font-size: 5em;
   color: #cd0000;
 `
 
@@ -24,8 +23,10 @@ class About extends Component {
               ABOUT - {this.props.stuff ? 'WITH STUFF' : 'NO STUFF'}
             </title>
           </Helmet>
-          about {this.props.stuff ? 'with stuff' : 'no stuff'}
-          <Box />
+          <h1>
+            <Box />
+          </h1>
+          <p>about {this.props.stuff ? 'with stuff' : 'no stuff'}</p>
         </div>
       </Layout>
     )
