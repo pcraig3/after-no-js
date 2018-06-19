@@ -16,6 +16,7 @@ injectGlobal`
 class Layout extends React.Component {
   constructor(props) {
     super(props)
+
     this.switchTheme = themeName => {
       if (themes[themeName]) {
         this.setState(state => ({
@@ -24,10 +25,16 @@ class Layout extends React.Component {
       }
     }
 
+    let name =
+      this.props.theme && this.props.theme.name
+        ? this.props.theme.name
+        : undefined
+    let initTheme = themes[name] ? themes[name] : themes.dark
+
     this.state = {
       theme: {
         f: this.switchTheme,
-        theme: themes.dark,
+        theme: initTheme,
       },
     }
   }

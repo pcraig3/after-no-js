@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@jaredpalmer/after": "latest",
+    "cookie-parser": "^1.4.3",
     "emotion": "^9.2.3",
     "emotion-server": "^9.2.3",
     "express": "^4.16.2",
+    "js-cookie": "^2.2.0",
     "razzle": "^2.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.4.0",

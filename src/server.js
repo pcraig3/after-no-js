@@ -1,4 +1,5 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import { render } from '@jaredpalmer/after'
 import { renderToString } from 'react-dom/server'
 import routes from './routes'
@@ -11,7 +12,15 @@ const server = express()
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(cookieParser())
   .get('/*', async (req, res) => {
+    //res.cookie('me', { firstName: 'paul', lastName: 'craig' })
+
+    // Cookies that have not been signed
+    console.log('Regular Cookies')
+    console.log(req.cookies)
+    console.log('///')
+
     const customRenderer = node => ({
       html: renderStylesToString(renderToString(node)),
     })
@@ -23,7 +32,6 @@ server
         customRenderer,
         routes,
         assets,
-        customThing: 'this is a thing',
         document: MyDocument,
       })
       res.send(html)

@@ -1,36 +1,57 @@
 import React, { Component } from 'react'
-import { css } from 'react-emotion'
 import { Helmet } from 'react-helmet'
+import Cookies from 'js-cookie'
 import Box from './Box'
 import Layout from './Layout'
 
-const about = css`
-  color: #cd0000;
-`
-
 class About extends Component {
-  static async getInitialProps({ req, res, match }) {
-    const stuff = true
-    return { stuff }
-  }
-
   render() {
+    const { theme: { name } = {} } = this.props
     return (
-      <Layout>
-        <div className={about}>
+      <Layout theme={this.props.theme || {}}>
+        <div>
           <Helmet>
-            <title>
-              ABOUT - {this.props.stuff ? 'WITH STUFF' : 'NO STUFF'}
-            </title>
+            <title>ABOUT - {name ? 'WITH THEME: ' + name : 'NO THEME'}</title>
           </Helmet>
           <h1>
             <Box />
           </h1>
-          <p>about {this.props.stuff ? 'with stuff' : 'no stuff'}</p>
+          <p>about page {name ? 'with theme: ' + name : 'no theme'}</p>
         </div>
       </Layout>
     )
   }
 }
 
-export default About
+function CacheLayer(WrappedComponent) {
+  return class extends React.Component {
+    static async getInitialProps(props) {
+      props.res.cookie('theme', { name: 'light' })
+      // props.req.cookies.theme_colour = 'light'
+
+      const theme = { name: 'light' }
+      return { theme }
+    }
+
+    constructor(props) {
+      super(props)
+      // Cookies.set('theme', {name: 'light'})
+
+      let theme = Cookies.get('theme')
+      theme =
+        typeof theme === 'string' && theme.startsWith('j:')
+          ? JSON.parse(theme.slice(2))
+          : theme
+
+      this.state = {
+        theme: props.theme || theme,
+      }
+    }
+
+    render() {
+      return <WrappedComponent theme={this.state.theme} {...this.props} />
+    }
+  }
+}
+
+export default CacheLayer(About)
