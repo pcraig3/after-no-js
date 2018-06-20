@@ -18,7 +18,7 @@ function withProvider(WrappedComponent) {
         if (themes[themeName]) {
           this.setState(state => ({
             theme: {
-              theme: themes[themeName],
+              selectedTheme: themes[themeName],
               switchTheme: state.theme.switchTheme,
             },
           }))
@@ -35,12 +35,12 @@ function withProvider(WrappedComponent) {
           : theme
 
       let initTheme = props.theme
-        ? props.theme.theme
-        : theme ? theme : themeDefault.theme
+        ? props.theme.selectedTheme
+        : theme ? theme : themeDefault.selectedTheme
 
       this.state = {
         theme: {
-          theme: initTheme,
+          selectedTheme: initTheme,
           switchTheme: this.switchThemeName,
         },
       }

@@ -6,7 +6,7 @@ import Layout from './Layout'
 
 class About extends Component {
   render() {
-    const { theme: { theme: { name } = {} } = {} } = this.props
+    const { theme: { selectedTheme: { name } = {} } = {} } = this.props
     return (
       <Layout>
         <div>

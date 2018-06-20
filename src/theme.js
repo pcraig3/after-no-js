@@ -19,7 +19,7 @@ export const themes = {
 }
 
 export const themeDefault = {
-  theme: themes.light,
+  selectedTheme: themes.light,
   switchTheme: null,
 }
 

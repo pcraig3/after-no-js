@@ -20,7 +20,7 @@ class Form extends Component {
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
     this.state = {
-      themeName: props.theme.theme.name,
+      themeName: props.theme.selectedTheme.name,
     }
   }
 
