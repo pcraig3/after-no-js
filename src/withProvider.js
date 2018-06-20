@@ -11,16 +11,21 @@ const setThemeCookie = (req, res) => {
     query.selectedTheme && // if there is a selectedTheme key
     themes[query.selectedTheme] // if the value is one of our themes
   ) {
-    res.cookie('selectedTheme', query.selectedTheme, { expires: inFiveMinutes })
+    res.cookie('selectedTheme', JSON.stringify({ name: query.selectedTheme }), {
+      expires: inFiveMinutes,
+    })
     return true
   }
   return false
 }
 
 const getThemeCookie = req => {
-  let selectedTheme = req.cookies.selectedTheme
-  if (selectedTheme && themes[selectedTheme]) {
-    return selectedTheme
+  let themeName =
+    req.cookies.selectedTheme && JSON.parse(req.cookies.selectedTheme).name
+      ? JSON.parse(req.cookies.selectedTheme).name
+      : undefined
+  if (themeName && themes[themeName]) {
+    return themeName
   }
   return false
 }
@@ -61,13 +66,17 @@ function withProvider(WrappedComponent) {
             }),
             () => {
               console.log('setting a cookie! ' + themeName)
-              Cookies.set('selectedTheme', themeName)
+              Cookies.set('selectedTheme', JSON.stringify({ name: themeName }))
             },
           )
         }
       }
 
-      let theme = Cookies.get('selectedTheme')
+      let theme =
+        Cookies.getJSON('selectedTheme') &&
+        Cookies.getJSON('selectedTheme').name
+          ? Cookies.getJSON('selectedTheme').name
+          : undefined
 
       let initTheme = props.theme
         ? props.theme.selectedTheme
