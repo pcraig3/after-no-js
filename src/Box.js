@@ -1,14 +1,14 @@
 import React from 'react'
 import withTheme from './withTheme'
 
-const Box = ({ children, theme: { selectedTheme } }) => (
+const Box = ({ children, theme: { selectedTheme = {} } }) => (
   <div
     style={{
-      color: selectedTheme.foreground,
-      backgroundColor: selectedTheme.background,
+      color: selectedTheme.foreground || '#000000',
+      backgroundColor: selectedTheme.background || '#FFFFFF',
     }}
   >
-    {children ? children : selectedTheme.name}
+    {children ? children : selectedTheme.name || 'undefined'}
   </div>
 )
 
