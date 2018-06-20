@@ -1,5 +1,5 @@
 import React from 'react'
-import { ThemeContext } from './theme'
+import withTheme from './withTheme'
 
 const Box = ({ children, theme: { theme } }) => (
   <div
@@ -12,8 +12,4 @@ const Box = ({ children, theme: { theme } }) => (
   </div>
 )
 
-export default props => (
-  <ThemeContext.Consumer>
-    {theme => <Box {...props} theme={theme} />}
-  </ThemeContext.Consumer>
-)
+export default withTheme(Box)

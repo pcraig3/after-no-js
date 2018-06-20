@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { injectGlobal } from 'emotion'
 import { Link } from 'react-router-dom'
-import { ThemeContext, themes } from './theme'
 
 injectGlobal`
   html, body {
@@ -14,34 +13,6 @@ injectGlobal`
 `
 
 class Layout extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.switchThemeName = themeName => {
-      if (themes[themeName]) {
-        this.setState(state => ({
-          theme: {
-            theme: themes[themeName],
-            switchTheme: state.theme.switchTheme,
-          },
-        }))
-      }
-    }
-
-    let name =
-      this.props.theme && this.props.theme.name
-        ? this.props.theme.name
-        : undefined
-    let initTheme = themes[name] ? themes[name] : themes.dark
-
-    this.state = {
-      theme: {
-        switchTheme: this.switchThemeName,
-        theme: initTheme,
-      },
-    }
-  }
-
   render() {
     return (
       <main>
@@ -49,9 +20,7 @@ class Layout extends React.Component {
           <Link to="/">Home</Link> <Link to="/about">About</Link>{' '}
           <Link to="/form">Form</Link>
         </nav>
-        <ThemeContext.Provider value={this.state.theme}>
-          {this.props.children}
-        </ThemeContext.Provider>
+        {this.props.children}
       </main>
     )
   }

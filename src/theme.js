@@ -18,7 +18,9 @@ export const themes = {
   },
 }
 
-export const ThemeContext = React.createContext({
+export const themeDefault = {
   theme: themes.light,
-  switchTheme: () => {},
-})
+  switchTheme: null,
+}
+
+export const ThemeContext = React.createContext(themeDefault)

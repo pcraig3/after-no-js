@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
-import CookieMonster from './CookieMonster'
+import withTheme from './withTheme'
 import Box from './Box'
 import Layout from './Layout'
 
 class About extends Component {
   render() {
-    const { theme: { name } = {} } = this.props
+    const { theme: { theme: { name } = {} } = {} } = this.props
     return (
-      <Layout theme={this.props.theme || {}}>
+      <Layout>
         <div>
           <Helmet>
             <title>ABOUT - {name ? 'WITH THEME: ' + name : 'NO THEME'}</title>
@@ -23,4 +23,4 @@ class About extends Component {
   }
 }
 
-export default CookieMonster(About)
+export default withTheme(About)
