@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
-import withTheme from './withTheme'
-import Box from './Box'
-import Layout from './Layout'
+import withProvider from '../withProvider'
+import withTheme from '../withTheme'
+import Box from '../Box'
+import Layout from '../Layout'
 
 class About extends Component {
   render() {
@@ -23,4 +24,4 @@ class About extends Component {
   }
 }
 
-export default withTheme(About)
+export default withProvider(withTheme(About))

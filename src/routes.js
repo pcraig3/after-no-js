@@ -7,7 +7,7 @@ export default [
     path: '/',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./Home'), // required
+      loader: () => import('./pages/Home'), // required
       Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
     }),
   },
@@ -15,7 +15,7 @@ export default [
     path: '/about',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./About'), // required
+      loader: () => import('./pages/About'), // required
       Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
     }),
   },
@@ -23,7 +23,7 @@ export default [
     path: '/form',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./Form'), // required
+      loader: () => import('./pages/Form'), // required
       Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
     }),
   },
