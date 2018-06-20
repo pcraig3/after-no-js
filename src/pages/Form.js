@@ -45,7 +45,7 @@ class Form extends Component {
             <label>
               DARK<input
                 type="radio"
-                name="theme"
+                name="selectedTheme"
                 value="dark"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'dark'}
@@ -54,7 +54,7 @@ class Form extends Component {
             <label>
               LIGHT<input
                 type="radio"
-                name="theme"
+                name="selectedTheme"
                 value="light"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'light'}
@@ -63,7 +63,7 @@ class Form extends Component {
             <label>
               MONOCHROME<input
                 type="radio"
-                name="theme"
+                name="selectedTheme"
                 value="monochrome"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'monochrome'}
