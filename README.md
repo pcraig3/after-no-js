@@ -1,21 +1,20 @@
-# Razzle x After.js
+# After using React Context and optional JS
 
-## How to use
+## Setup
 
-Download the example [or clone the whole project](https://github.com/jaredpalmer/razzle.git):
-
-```bash
-curl https://codeload.github.com/jaredpalmer/razzle/tar.gz/master | tar -xz --strip=2 razzle-master/examples/with-afterjs
-cd with-afterjs
-```
-
-Install it and run:
-
-```bash
-yarn install
-yarn start
-```
+- clone repo
+- `yarn`
+- `yarn start`
+- visit [localhost:3000](http://localhost:3000)
+- 🚀
 
 ## Idea behind the example
 
-This is a basic, bare-bones example of how to use After.js and Razzle.
+- Caching
+
+Store global data using [React context](https://reactjs.org/docs/context.html).
+Means we can update themes and languages and whatever.
+
+- No-JS (TODO)
+
+Should work with or without JS. Stay tuned. 👷‍
