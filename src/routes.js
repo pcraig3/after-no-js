@@ -27,4 +27,12 @@ export default [
       Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
     }),
   },
+  {
+    path: '/validation',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import('./pages/Validation'), // required
+      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
+    }),
+  },
 ]

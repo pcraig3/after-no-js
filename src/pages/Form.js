@@ -5,13 +5,27 @@ import withTheme from '../withTheme'
 import Layout from '../Layout'
 import Box from '../Box'
 
-const form = css`
-  button { font-size: 1em; }
+export const form = css`
+  button {
+    font-size: 1em;
+  }
 
   label {
     display: block;
     margin-bottom: 1em;
-    }
+    width: 10em;
+  }
+
+  input[type='text'] {
+    padding-bottom: 0.1rem;
+    padding-left: 0.3rem;
+    font-size: 1rem;
+    border: 2px solid grey;
+  }
+
+  input[type='radio'] {
+    margin-right: 1em;
+    margin-top: -10px;
   }
 `
 
@@ -47,31 +61,31 @@ class Form extends Component {
           <fieldset>
             <legend>theme colour</legend>
             <label>
-              DARK<input
+              <input
                 type="radio"
                 name="selectedTheme"
                 value="dark"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'dark'}
-              />
+              />DARK
             </label>
             <label>
-              LIGHT<input
+              <input
                 type="radio"
                 name="selectedTheme"
                 value="light"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'light'}
-              />
+              />LIGHT
             </label>
             <label>
-              MONOCHROME<input
+              <input
                 type="radio"
                 name="selectedTheme"
                 value="monochrome"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'monochrome'}
-              />
+              />MONOCHROME
             </label>
           </fieldset>
           <button

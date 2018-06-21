@@ -18,7 +18,7 @@ class Layout extends React.Component {
       <main>
         <nav>
           <Link to="/">Home</Link> <Link to="/about">About</Link>{' '}
-          <Link to="/form">Form</Link>
+          <Link to="/form">Form</Link> <Link to="/validation">Validation</Link>
         </nav>
         {this.props.children}
       </main>
