@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server'
 import routes from './routes'
 import MyDocument from './Document'
 import { renderStylesToString } from 'emotion-server'
+import { SECRET } from './cookies'
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
 
@@ -12,7 +13,7 @@ const server = express()
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .use(cookieParser())
+  .use(cookieParser(SECRET))
   .get('/*', async (req, res) => {
     //res.cookie('me', { firstName: 'paul', lastName: 'craig' })
 
