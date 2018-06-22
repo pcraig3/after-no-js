@@ -1,29 +1,21 @@
 import React, { Component } from 'react'
 import Cookies from 'js-cookie'
-import { setStoreCookie, setSSRCookie, getThemeCookie } from './cookies'
-import { themes, contextDefault, Context } from './context'
+import { setStoreCookie, getStoreCookie, setSSRCookie } from './cookies'
+import { contextDefault, Context } from './context'
 
 function withProvider(WrappedComponent) {
   return class extends Component {
     static async getInitialProps({ res, req, match }) {
-      /* TODO fill up the context and then choose the theme based on that */
-      let initContext
+      let initStore =
+        setSSRCookie(req, res, match) ||
+        getStoreCookie(req.cookies) ||
+        contextDefault.store
 
-      /* TODO have to get this cookie first and then merge in query params */
-      if (setSSRCookie(req, res, match)) {
-        console.log('set cookie! ', req.query)
-        /* TODO this initial bit has to be genericized somehow */
-        initContext = themes[req.query.selectedTheme]
-      } else if (getThemeCookie(req.cookies)) {
-        console.log('found cookie! ' + getThemeCookie(req.cookies))
-        initContext = themes[getThemeCookie(req.cookies)]
-      }
       // res.clearCookie('store')
 
       return {
         context: {
-          theme: initContext || contextDefault.theme,
-          store: contextDefault.store,
+          store: initStore,
           setStore: contextDefault.setStore,
         },
       }
@@ -45,17 +37,10 @@ function withProvider(WrappedComponent) {
         }
 
         let newState = { [key]: obj }
-        let newTheme
-
-        /* TODO this is dumb */
-        if (obj.selectedTheme && themes[obj.selectedTheme]) {
-          newTheme = themes[obj.selectedTheme]
-        }
 
         this.setState(
           state => ({
             context: {
-              theme: newTheme || state.context.theme,
               store: { ...state.context.store, ...newState },
               setStore: state.context.setStore,
             },
@@ -67,19 +52,12 @@ function withProvider(WrappedComponent) {
         )
       }
 
-      let themeName = getThemeCookie(Cookies.get())
-
-      /* TODO fill up the context and then choose the theme based on that */
-      let initContext = props.context
-        ? props.context.theme
-        : themeName ? themes[themeName] : contextDefault.theme
-
-      /* TODO: here we go */
-      let initStore = props.context ? props.context.store : contextDefault.store
+      let initStore = props.context
+        ? props.context.store
+        : getStoreCookie(Cookies.get()) || contextDefault.store
 
       this.state = {
         context: {
-          theme: initContext,
           store: initStore,
           setStore: this.setStore,
         },

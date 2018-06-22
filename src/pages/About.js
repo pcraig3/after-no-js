@@ -7,17 +7,25 @@ import Layout from '../Layout'
 
 class About extends Component {
   render() {
-    const { context: { theme: { name } = {} } = {} } = this.props
+    const {
+      context: { store: { form: { selectedTheme } = {} } = {} } = {},
+    } = this.props
     return (
       <Layout>
         <div>
           <Helmet>
-            <title>ABOUT - {name ? 'WITH THEME: ' + name : 'NO THEME'}</title>
+            <title>
+              ABOUT -{' '}
+              {selectedTheme ? 'WITH THEME: ' + selectedTheme : 'NO THEME'}
+            </title>
           </Helmet>
           <h1>
             <Box />
           </h1>
-          <p>about page {name ? 'with theme: ' + name : 'no theme'}</p>
+          <p>
+            about page{' '}
+            {selectedTheme ? 'with theme: ' + selectedTheme : 'no theme'}
+          </p>
         </div>
       </Layout>
     )

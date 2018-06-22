@@ -4,6 +4,7 @@ import withProvider from '../withProvider'
 import withContext from '../withContext'
 import Layout from '../Layout'
 import Box from '../Box'
+import { themes } from '../context'
 
 export const form = css`
   button {
@@ -34,10 +35,12 @@ class Form extends Component {
     super(props)
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
+    let { store: { form: { selectedTheme } = {} } = {} } = props.context
     let initThemeName =
-      props.context.theme && props.context.theme.name
-        ? props.context.theme.name
+      themes[selectedTheme] && themes[selectedTheme].name
+        ? themes[selectedTheme].name
         : 'undefined'
+
     this.state = {
       themeName: initThemeName,
     }

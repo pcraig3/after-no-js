@@ -19,7 +19,6 @@ export const themes = {
 }
 
 export const contextDefault = {
-  theme: themes.light,
   store: {},
   setStore: null,
 }

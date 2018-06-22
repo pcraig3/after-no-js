@@ -31,6 +31,8 @@ export const getStoreCookie = cookies => {
       process.env.NODE_ENV === 'development'
         ? JSON.parse(cookie)
         : JSON.parse(cookieEncrypter.decryptCookie(cookie, { key: SECRET }))
+
+    console.log('found cookie! ', cookie)
   }
   return cookie
 }
@@ -45,30 +47,13 @@ export const setSSRCookie = (req, res, match) => {
     // match.path === "/about" or similar
     let path = match.path.slice(1)
     let newCookie = { [path]: query }
+    let cookie = { ...prevCookie, ...newCookie }
 
-    setStoreCookie(
-      res.cookie.bind(res),
-      { ...prevCookie, ...newCookie },
-      {
-        expires: FIVE_MINUTES,
-      },
-    )
-    return true
-  }
-  return false
-}
-
-/* TODO: change name */
-export const getThemeCookie = cookies => {
-  if (!cookies) {
-    return false
-  }
-
-  let store = getStoreCookie(cookies)
-  let { form: { selectedTheme } = {} } = store
-
-  if (selectedTheme) {
-    return selectedTheme
+    console.log('set cookie! ', cookie)
+    setStoreCookie(res.cookie.bind(res), cookie, {
+      expires: FIVE_MINUTES,
+    })
+    return cookie
   }
   return false
 }
