@@ -14,6 +14,10 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .use(cookieParser(SECRET))
+  .get('/clear', (req, res) => {
+    res.clearCookie('store')
+    return res.send('no more cookies 🍪')
+  })
   .get('/*', async (req, res) => {
     //res.cookie('me', { firstName: 'paul', lastName: 'craig' })
 

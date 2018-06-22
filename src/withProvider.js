@@ -11,8 +11,6 @@ function withProvider(WrappedComponent) {
         getStoreCookie(req.cookies) ||
         contextDefault.store
 
-      // res.clearCookie('store')
-
       return {
         context: {
           store: initStore,
