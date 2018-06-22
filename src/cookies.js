@@ -13,16 +13,27 @@ export const setStoreCookie = (setCookieFunc, cookie, options = {}) => {
   ) {
     throw new Error('setStoreCookie: `cookie` must be a non-empty object')
   }
-  cookie = JSON.stringify(cookie)
-  let encryptedCookie = cookieEncrypter.encryptCookie(cookie, { key: SECRET })
-  setCookieFunc('store', encryptedCookie, options)
+
+  /* Only encrypt cookie when NODE_ENV is *not* 'development' */
+  cookie =
+    process.env.NODE_ENV === 'development'
+      ? JSON.stringify(cookie)
+      : cookieEncrypter.encryptCookie(JSON.stringify(cookie), { key: SECRET })
+
+  setCookieFunc('store', cookie, options)
 }
 
 export const getStoreCookie = cookies => {
-  let cookie = cookies.store
+  let cookie = cookies && cookies.store ? cookies.store : false
+
+  if (cookie) {
+    /* Cookie will only be encryped when NODE_ENV is *not* 'development' */
+    cookie =
+      process.env.NODE_ENV === 'development'
+        ? JSON.parse(cookie)
+        : JSON.parse(cookieEncrypter.decryptCookie(cookie, { key: SECRET }))
+  }
   return cookie
-    ? JSON.parse(cookieEncrypter.decryptCookie(cookie, { key: SECRET }))
-    : false
 }
 
 export const setSSRCookie = (req, res) => {
