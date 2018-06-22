@@ -3,8 +3,8 @@ import withContext from './withContext'
 import { themes } from './context'
 
 const Box = ({ children, context }) => {
-  let { store: { form: { selectedTheme } = {} } = {} } = context
-  let theme = themes[selectedTheme] || {}
+  let { store: { form: { themeName } = {} } = {} } = context
+  let theme = themes[themeName] || {}
 
   return (
     <div

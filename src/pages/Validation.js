@@ -8,11 +8,25 @@ import { form } from './Form'
 class Validation extends Component {
   constructor(props) {
     super(props)
+    this.handleInputChange = this.handleInputChange.bind(this)
 
-    console.log(props)
+    let {
+      store: { validation: { notEmpty, number } = {} } = {},
+    } = props.context
+
+    this.state = {
+      notEmpty: notEmpty || '',
+      number: number || '',
+    }
+  }
+
+  handleInputChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   render() {
+    const { setStore } = this.props.context
+
     return (
       <Layout>
         <form className={form}>
@@ -20,12 +34,33 @@ class Validation extends Component {
             <h1>validation</h1>
           </Box>
           <label>
-            NOT EMPTY <input id="notEmpty" name="notEmpty" type="text" />
+            NOT EMPTY{' '}
+            <input
+              id="notEmpty"
+              name="notEmpty"
+              type="text"
+              onChange={this.handleInputChange}
+              value={this.state.notEmpty}
+            />
           </label>
           <label>
-            NUMBER <input id="number" name="number" type="text" />
+            NUMBER{' '}
+            <input
+              id="number"
+              name="number"
+              type="text"
+              onChange={this.handleInputChange}
+              value={this.state.number}
+            />
           </label>
-          <button>submit</button>
+          <button
+            onClick={e => {
+              e.preventDefault()
+              setStore(this.props.match.path.slice(1), this.state)
+            }}
+          >
+            submit
+          </button>
         </form>
       </Layout>
     )

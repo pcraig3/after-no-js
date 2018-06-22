@@ -4,7 +4,6 @@ import withProvider from '../withProvider'
 import withContext from '../withContext'
 import Layout from '../Layout'
 import Box from '../Box'
-import { themes } from '../context'
 
 export const form = css`
   button {
@@ -35,14 +34,10 @@ class Form extends Component {
     super(props)
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
-    let { store: { form: { selectedTheme } = {} } = {} } = props.context
-    let initThemeName =
-      themes[selectedTheme] && themes[selectedTheme].name
-        ? themes[selectedTheme].name
-        : 'undefined'
+    let { store: { form: { themeName } = {} } = {} } = props.context
 
     this.state = {
-      themeName: initThemeName,
+      themeName: themeName || '',
     }
   }
 
@@ -66,7 +61,7 @@ class Form extends Component {
             <label>
               <input
                 type="radio"
-                name="selectedTheme"
+                name="themeName"
                 value="dark"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'dark'}
@@ -75,7 +70,7 @@ class Form extends Component {
             <label>
               <input
                 type="radio"
-                name="selectedTheme"
+                name="themeName"
                 value="light"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'light'}
@@ -84,7 +79,7 @@ class Form extends Component {
             <label>
               <input
                 type="radio"
-                name="selectedTheme"
+                name="themeName"
                 value="monochrome"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'monochrome'}
@@ -94,9 +89,7 @@ class Form extends Component {
           <button
             onClick={e => {
               e.preventDefault()
-              setStore(this.props.match.path.slice(1), {
-                selectedTheme: this.state.themeName,
-              })
+              setStore(this.props.match.path.slice(1), this.state)
             }}
           >
             submit
