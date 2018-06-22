@@ -1,13 +1,17 @@
 {
   "name": "after-no-js",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "After.js with React context and browser cookies: a JS-agnostic proof of concept app",
+  "homepage": "https://github.com/pcraig3/after-no-js",
   "license": "MIT",
+  "author": "Paul Craig",
+  "engines" : { "node" : ">=8" },
   "scripts": {
-    "start": "razzle start",
+    "dev": "razzle start",
     "build": "razzle build",
     "lint": "node_modules/eslint/bin/eslint.js --ignore-pattern src/routes.js src",
     "test": "razzle test --env=jsdom",
-    "start:prod": "NODE_ENV=production node build/server.js"
+    "start": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
     "@jaredpalmer/after": "latest",
