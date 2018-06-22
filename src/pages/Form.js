@@ -35,8 +35,8 @@ class Form extends Component {
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
     let initThemeName =
-      props.context.selectedTheme && props.context.selectedTheme.name
-        ? props.context.selectedTheme.name
+      props.context.theme && props.context.theme.name
+        ? props.context.theme.name
         : 'undefined'
     this.state = {
       themeName: initThemeName,

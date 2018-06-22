@@ -6,9 +6,11 @@ import { themes, contextDefault, Context } from './context'
 function withProvider(WrappedComponent) {
   return class extends Component {
     static async getInitialProps({ res, req, match }) {
-      let initContext = contextDefault.selectedTheme
+      /* TODO fill up the context and then choose the theme based on that */
+      let initContext
 
       if (setSSRCookie(req, res)) {
+        /* TODO this initial bit has to be genericized somehow */
         console.log('set cookie! ' + req.query.selectedTheme)
         initContext = themes[req.query.selectedTheme]
       } else if (getThemeCookie(req.cookies)) {
@@ -19,7 +21,8 @@ function withProvider(WrappedComponent) {
 
       return {
         context: {
-          selectedTheme: initContext,
+          theme: initContext || contextDefault.theme,
+          store: contextDefault.store,
           switchTheme: contextDefault.switchTheme,
         },
       }
@@ -33,7 +36,8 @@ function withProvider(WrappedComponent) {
           this.setState(
             state => ({
               context: {
-                selectedTheme: themes[themeName],
+                theme: themes[themeName],
+                store: state.context.store,
                 switchTheme: state.context.switchTheme,
               },
             }),
@@ -47,20 +51,25 @@ function withProvider(WrappedComponent) {
 
       let themeName = getThemeCookie(Cookies.get())
 
+      /* TODO fill up the context and then choose the theme based on that */
       let initContext = props.context
-        ? props.context.selectedTheme
-        : themeName ? themes[themeName] : contextDefault.selectedTheme
+        ? props.context.theme
+        : themeName ? themes[themeName] : contextDefault.theme
+
+      /* TODO: here we go */
+      let initStore = props.context ? props.context.store : contextDefault.store
 
       this.state = {
         context: {
-          selectedTheme: initContext,
+          theme: initContext,
+          store: initStore,
           switchTheme: this.switchThemeName,
         },
       }
     }
 
     render() {
-      // don't pass in the theme as props -- we're passing the state instead
+      // don't pass in the context as props -- we're passing the state instead
       const { context, ...props } = this.props
       return (
         <Context.Provider value={this.state.context}>

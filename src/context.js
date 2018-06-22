@@ -19,7 +19,8 @@ export const themes = {
 }
 
 export const contextDefault = {
-  selectedTheme: themes.light,
+  theme: themes.light,
+  store: { form: { selectedTheme: 'light' } } /* TODO remove this */,
   switchTheme: null,
 }
 
