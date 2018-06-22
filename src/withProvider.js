@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Cookies from 'js-cookie'
-import { setCookie, setSSRCookie, getThemeCookie } from './cookies'
+import { setStoreCookie, setSSRCookie, getThemeCookie } from './cookies'
 import { themes, contextDefault, Context } from './context'
 
 function withProvider(WrappedComponent) {
@@ -9,6 +9,7 @@ function withProvider(WrappedComponent) {
       /* TODO fill up the context and then choose the theme based on that */
       let initContext
 
+      /* TODO have to get this cookie first and then merge in query params */
       if (setSSRCookie(req, res)) {
         /* TODO this initial bit has to be genericized somehow */
         console.log('set cookie! ' + req.query.selectedTheme)
@@ -17,13 +18,14 @@ function withProvider(WrappedComponent) {
         console.log('found cookie! ' + getThemeCookie(req.cookies))
         initContext = themes[getThemeCookie(req.cookies)]
       }
-      // res.clearCookie('selectedTheme')
+      // res.clearCookie('store')
 
+      console.log(match)
       return {
         context: {
           theme: initContext || contextDefault.theme,
           store: contextDefault.store,
-          switchTheme: contextDefault.switchTheme,
+          setStore: contextDefault.setStore,
         },
       }
     }
@@ -31,22 +33,39 @@ function withProvider(WrappedComponent) {
     constructor(props) {
       super(props)
 
-      this.switchThemeName = themeName => {
-        if (themes[themeName]) {
-          this.setState(
-            state => ({
-              context: {
-                theme: themes[themeName],
-                store: state.context.store,
-                switchTheme: state.context.switchTheme,
-              },
-            }),
-            () => {
-              console.log('setting a cookie! ' + themeName)
-              setCookie(Cookies.set.bind(Cookies), { name: themeName })
-            },
-          )
+      this.setStore = (key, obj = null) => {
+        if (typeof key !== 'string') {
+          throw new Error('setStore: `key` must be a string value')
         }
+        if (
+          obj === null || // if obj is null
+          typeof obj !== 'object' || // if obj is _not_ an object
+          Object.keys(obj).length === 0 // if obj is empty
+        ) {
+          throw new Error('setStore: `obj` must be a non-empty object')
+        }
+
+        let newState = { [key]: obj }
+        let newTheme
+
+        /* TODO this is dumb */
+        if (obj.selectedTheme && themes[obj.selectedTheme]) {
+          newTheme = themes[obj.selectedTheme]
+        }
+
+        this.setState(
+          state => ({
+            context: {
+              theme: newTheme || state.context.theme,
+              store: { ...state.context.store, ...newState },
+              setStore: state.context.setStore,
+            },
+          }),
+          () => {
+            console.log('setting a cookie! ', this.state.context.store)
+            setStoreCookie(Cookies.set.bind(Cookies), this.state.context.store)
+          },
+        )
       }
 
       let themeName = getThemeCookie(Cookies.get())
@@ -63,7 +82,7 @@ function withProvider(WrappedComponent) {
         context: {
           theme: initContext,
           store: initStore,
-          switchTheme: this.switchThemeName,
+          setStore: this.setStore,
         },
       }
     }

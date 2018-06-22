@@ -20,8 +20,8 @@ export const themes = {
 
 export const contextDefault = {
   theme: themes.light,
-  store: { form: { selectedTheme: 'light' } } /* TODO remove this */,
-  switchTheme: null,
+  store: {},
+  setStore: null,
 }
 
 export const Context = React.createContext(contextDefault)

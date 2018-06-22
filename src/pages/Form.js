@@ -34,6 +34,10 @@ class Form extends Component {
     super(props)
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
+    console.log('-------------->')
+    console.log(props.match)
+    console.log('<--------------')
+
     let initThemeName =
       props.context.theme && props.context.theme.name
         ? props.context.theme.name
@@ -50,7 +54,7 @@ class Form extends Component {
   }
 
   render() {
-    const { switchTheme } = this.props.context
+    const { setStore } = this.props.context
 
     return (
       <Layout>
@@ -91,7 +95,7 @@ class Form extends Component {
           <button
             onClick={e => {
               e.preventDefault()
-              switchTheme(this.state.themeName)
+              setStore('form', { selectedTheme: this.state.themeName })
             }}
           >
             submit
