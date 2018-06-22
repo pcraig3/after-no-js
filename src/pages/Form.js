@@ -34,10 +34,6 @@ class Form extends Component {
     super(props)
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
-    console.log('-------------->')
-    console.log(props.match)
-    console.log('<--------------')
-
     let initThemeName =
       props.context.theme && props.context.theme.name
         ? props.context.theme.name
@@ -95,7 +91,9 @@ class Form extends Component {
           <button
             onClick={e => {
               e.preventDefault()
-              setStore('form', { selectedTheme: this.state.themeName })
+              setStore(this.props.match.path.slice(1), {
+                selectedTheme: this.state.themeName,
+              })
             }}
           >
             submit

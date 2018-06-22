@@ -10,9 +10,9 @@ function withProvider(WrappedComponent) {
       let initContext
 
       /* TODO have to get this cookie first and then merge in query params */
-      if (setSSRCookie(req, res)) {
+      if (setSSRCookie(req, res, match)) {
+        console.log('set cookie! ', req.query)
         /* TODO this initial bit has to be genericized somehow */
-        console.log('set cookie! ' + req.query.selectedTheme)
         initContext = themes[req.query.selectedTheme]
       } else if (getThemeCookie(req.cookies)) {
         console.log('found cookie! ' + getThemeCookie(req.cookies))
@@ -20,7 +20,6 @@ function withProvider(WrappedComponent) {
       }
       // res.clearCookie('store')
 
-      console.log(match)
       return {
         context: {
           theme: initContext || contextDefault.theme,

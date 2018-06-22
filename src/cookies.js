@@ -1,5 +1,4 @@
 import cookieEncrypter from 'cookie-encrypter'
-import { themes } from './context'
 
 const FIVE_MINUTES = new Date(new Date().getTime() + 5 * 60 * 1000)
 
@@ -36,16 +35,20 @@ export const getStoreCookie = cookies => {
   return cookie
 }
 
-export const setSSRCookie = (req, res) => {
+export const setSSRCookie = (req, res, match) => {
   let { query } = req
+
   if (
-    Object.keys(query).length && // if there is a query
-    query.selectedTheme && // if there is a selectedTheme key
-    themes[query.selectedTheme] // if the value is one of our themes <- can't do this anymore
+    Object.keys(query).length // if there is a query (this means people can arbitrarily set cookies)
   ) {
+    let prevCookie = getStoreCookie(req.cookies)
+    // match.path === "/about" or similar
+    let path = match.path.slice(1)
+    let newCookie = { [path]: query }
+
     setStoreCookie(
       res.cookie.bind(res),
-      { form: { selectedTheme: query.selectedTheme } },
+      { ...prevCookie, ...newCookie },
       {
         expires: FIVE_MINUTES,
       },
