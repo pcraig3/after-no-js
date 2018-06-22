@@ -1,18 +1,18 @@
 import React from 'react'
-import { ThemeContext } from './theme'
+import { Context } from './context'
 
 // This function takes a component...
-export function withTheme(Component) {
+export function withContext(Component) {
   // ...and returns another component...
-  return function ThemedComponent(props) {
+  return function ContextComponent(props) {
     // ... and renders the wrapped component with the context theme!
     // Notice that we pass through any additional props as well
     return (
-      <ThemeContext.Consumer>
-        {theme => <Component {...props} theme={theme} />}
-      </ThemeContext.Consumer>
+      <Context.Consumer>
+        {context => <Component {...props} context={context} />}
+      </Context.Consumer>
     )
   }
 }
 
-export default withTheme
+export default withContext

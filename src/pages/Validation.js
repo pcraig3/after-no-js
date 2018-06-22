@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import withProvider from '../withProvider'
-import withTheme from '../withTheme'
+import withContext from '../withContext'
 import Layout from '../Layout'
 import Box from '../Box'
 import { form } from './Form'
@@ -32,4 +32,4 @@ class Validation extends Component {
   }
 }
 
-export default withProvider(withTheme(Validation))
+export default withProvider(withContext(Validation))

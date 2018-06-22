@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import Cookies from 'js-cookie'
 import { setCookie, setSSRCookie, getThemeCookie } from './cookies'
-import { themes, themeDefault, ThemeContext } from './theme'
+import { themes, contextDefault, Context } from './context'
 
 function withProvider(WrappedComponent) {
   return class extends Component {
     static async getInitialProps({ res, req, match }) {
-      let initTheme = themeDefault.selectedTheme
+      let initContext = contextDefault.selectedTheme
 
       if (setSSRCookie(req, res)) {
         console.log('set cookie! ' + req.query.selectedTheme)
-        initTheme = themes[req.query.selectedTheme]
+        initContext = themes[req.query.selectedTheme]
       } else if (getThemeCookie(req.cookies)) {
         console.log('found cookie! ' + getThemeCookie(req.cookies))
-        initTheme = themes[getThemeCookie(req.cookies)]
+        initContext = themes[getThemeCookie(req.cookies)]
       }
       // res.clearCookie('selectedTheme')
 
       return {
-        theme: {
-          selectedTheme: initTheme,
-          switchTheme: themeDefault.switchTheme,
+        context: {
+          selectedTheme: initContext,
+          switchTheme: contextDefault.switchTheme,
         },
       }
     }
@@ -32,9 +32,9 @@ function withProvider(WrappedComponent) {
         if (themes[themeName]) {
           this.setState(
             state => ({
-              theme: {
+              context: {
                 selectedTheme: themes[themeName],
-                switchTheme: state.theme.switchTheme,
+                switchTheme: state.context.switchTheme,
               },
             }),
             () => {
@@ -47,13 +47,13 @@ function withProvider(WrappedComponent) {
 
       let themeName = getThemeCookie(Cookies.get())
 
-      let initTheme = props.theme
-        ? props.theme.selectedTheme
-        : themeName ? themes[themeName] : themeDefault.selectedTheme
+      let initContext = props.context
+        ? props.context.selectedTheme
+        : themeName ? themes[themeName] : contextDefault.selectedTheme
 
       this.state = {
-        theme: {
-          selectedTheme: initTheme,
+        context: {
+          selectedTheme: initContext,
           switchTheme: this.switchThemeName,
         },
       }
@@ -61,11 +61,11 @@ function withProvider(WrappedComponent) {
 
     render() {
       // don't pass in the theme as props -- we're passing the state instead
-      const { theme, ...props } = this.props
+      const { context, ...props } = this.props
       return (
-        <ThemeContext.Provider value={this.state.theme}>
+        <Context.Provider value={this.state.context}>
           <WrappedComponent {...props} />
-        </ThemeContext.Provider>
+        </Context.Provider>
       )
     }
   }

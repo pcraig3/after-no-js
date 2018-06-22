@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import withProvider from '../withProvider'
-import withTheme from '../withTheme'
+import withContext from '../withContext'
 import Layout from '../Layout'
 import Box from '../Box'
 
@@ -24,4 +24,4 @@ class Home extends Component {
   }
 }
 
-export default withProvider(withTheme(Home))
+export default withProvider(withContext(Home))

@@ -18,9 +18,9 @@ export const themes = {
   },
 }
 
-export const themeDefault = {
+export const contextDefault = {
   selectedTheme: themes.light,
   switchTheme: null,
 }
 
-export const ThemeContext = React.createContext(themeDefault)
+export const Context = React.createContext(contextDefault)

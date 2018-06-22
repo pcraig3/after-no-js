@@ -1,5 +1,5 @@
 import cookieEncrypter from 'cookie-encrypter'
-import { themes } from './theme'
+import { themes } from './context'
 
 const FIVE_MINUTES = new Date(new Date().getTime() + 5 * 60 * 1000)
 
@@ -37,6 +37,7 @@ export const setSSRCookie = (req, res) => {
   return false
 }
 
+/* TODO: change name */
 export const getThemeCookie = cookies => {
   if (!cookies) {
     return false

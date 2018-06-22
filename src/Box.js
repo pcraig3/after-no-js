@@ -1,7 +1,7 @@
 import React from 'react'
-import withTheme from './withTheme'
+import withContext from './withContext'
 
-const Box = ({ children, theme: { selectedTheme = {} } }) => (
+const Box = ({ children, context: { selectedTheme = {} } }) => (
   <div
     style={{
       color: selectedTheme.foreground || '#000000',
@@ -12,4 +12,4 @@ const Box = ({ children, theme: { selectedTheme = {} } }) => (
   </div>
 )
 
-export default withTheme(Box)
+export default withContext(Box)

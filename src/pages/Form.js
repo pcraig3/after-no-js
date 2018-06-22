@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { css } from 'react-emotion'
 import withProvider from '../withProvider'
-import withTheme from '../withTheme'
+import withContext from '../withContext'
 import Layout from '../Layout'
 import Box from '../Box'
 
@@ -35,8 +35,8 @@ class Form extends Component {
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
 
     let initThemeName =
-      props.theme.selectedTheme && props.theme.selectedTheme.name
-        ? props.theme.selectedTheme.name
+      props.context.selectedTheme && props.context.selectedTheme.name
+        ? props.context.selectedTheme.name
         : 'undefined'
     this.state = {
       themeName: initThemeName,
@@ -50,7 +50,7 @@ class Form extends Component {
   }
 
   render() {
-    const { switchTheme } = this.props.theme
+    const { switchTheme } = this.props.context
 
     return (
       <Layout>
@@ -102,4 +102,4 @@ class Form extends Component {
   }
 }
 
-export default withProvider(withTheme(Form))
+export default withProvider(withContext(Form))
