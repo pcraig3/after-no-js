@@ -89,12 +89,20 @@ class Validation extends Component {
       store: { validation: { notEmpty = '', number = '' } = {} } = {},
     } = props.context
 
+    let errors = null
+
+    // only run this if there's a location.search so that
+    // we know for sure they pressed "submit"
+    if (props.location.search) {
+      errors = validate({ notEmpty, number })
+    }
+
     this.state = {
       values: {
-        notEmpty,
-        number,
+        notEmpty: errors && errors.notEmpty ? '' : notEmpty,
+        number: errors && errors.number ? '' : number,
       },
-      errors: null,
+      errors,
     }
   }
 
