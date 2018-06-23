@@ -20,8 +20,15 @@ const errorStyles = css`
     margin: 0;
     margin-bottom: 0.33rem;
     font-size: 1.33rem;
-    color: #cd0000;
-    text-shadow: #dddddd 1px 1px 0;
+
+    &.error {
+      color: #cd0000;
+      text-shadow: #dddddd 1px 1px 0;
+    }
+    &.success {
+      color: #31a519;
+      text-shadow: #cccccc 1px 1px 0;
+    }
   }
 
   ul {
@@ -61,9 +68,9 @@ const validate = values => {
   return Object.keys(errors).length ? errors : null
 }
 
-const errorList = errors => (
+const ErrorList = ({ errors }) => (
   <div>
-    <h2>error: you are bad at forms</h2>
+    <h2 className="error">error: you are bad at forms</h2>
     <ul>
       {errors.notEmpty ? (
         <li>
@@ -82,6 +89,9 @@ const errorList = errors => (
     </ul>
   </div>
 )
+ErrorList.propTypes = {
+  errors: PropTypes.object.isRequired,
+}
 
 class Form extends Component {
   constructor(props) {
@@ -106,6 +116,7 @@ class Form extends Component {
         number: errors && errors.number ? '' : number,
       },
       errors,
+      success: null,
     }
   }
 
@@ -116,7 +127,7 @@ class Form extends Component {
 
   render() {
     const { setStore } = this.props.context
-    const { errors } = this.state
+    const { errors, success } = this.state
 
     return (
       <Layout>
@@ -136,7 +147,12 @@ class Form extends Component {
               this.errorContainer = errorContainer
             }}
           >
-            {errors ? errorList(errors) : ''}
+            {errors ? <ErrorList errors={errors} /> : ''}
+            {success ? (
+              <h2 className="success">Success! Form values saved!</h2>
+            ) : (
+              ''
+            )}
           </div>
 
           <label>
@@ -173,7 +189,7 @@ class Form extends Component {
             onClick={e => {
               e.preventDefault()
               let errors = validate(this.state.values)
-              this.setState({ errors: errors })
+              this.setState({ errors: errors, success: !errors })
 
               if (!errors) {
                 setStore(this.props.match.path.slice(1), this.state.values)
