@@ -4,7 +4,7 @@ import withContext from './withContext'
 import { themes, contextPropTypes } from './context'
 
 const Box = ({ children, context }) => {
-  let { store: { form: { themeName } = {} } = {} } = context
+  let { store: { theme: { themeName } = {} } = {} } = context
   let theme = themes[themeName] || {}
 
   return (

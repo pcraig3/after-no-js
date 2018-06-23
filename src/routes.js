@@ -12,10 +12,18 @@ export default [
     }),
   },
   {
-    path: '/about',
+    path: '/values',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./pages/About'),
+      loader: () => import('./pages/Values'),
+      Placeholder: () => <div>...LOADING...</div>,
+    }),
+  },
+  {
+    path: '/theme',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import('./pages/Theme'),
       Placeholder: () => <div>...LOADING...</div>,
     }),
   },
@@ -24,14 +32,6 @@ export default [
     exact: true,
     component: asyncComponent({
       loader: () => import('./pages/Form'),
-      Placeholder: () => <div>...LOADING...</div>,
-    }),
-  },
-  {
-    path: '/validation',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import('./pages/Validation'),
       Placeholder: () => <div>...LOADING...</div>,
     }),
   },

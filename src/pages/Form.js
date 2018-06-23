@@ -1,97 +1,185 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Helmet } from 'react-helmet'
 import { contextPropTypes } from '../context'
 import { css } from 'react-emotion'
 import withProvider from '../withProvider'
 import withContext from '../withContext'
 import Layout from '../Layout'
-import Box from '../Box'
+import ThemeBlock from '../ThemeBlock'
+import { form } from './Theme'
 
-export const form = css`
-  button {
-    font-size: 1em;
+const errorStyles = css`
+  margin-bottom: 1.33rem;
+
+  > div {
+    display: inline-block;
   }
 
-  label {
-    display: block;
-    margin-bottom: 1em;
-    width: 10em;
+  h2 {
+    margin: 0;
+    margin-bottom: 0.33rem;
+    font-size: 1.33rem;
+    color: #cd0000;
+    text-shadow: #dddddd 1px 1px 0;
   }
 
-  input[type='text'] {
-    padding-bottom: 0.1rem;
-    padding-left: 0.3rem;
-    font-size: 1rem;
-    border: 2px solid grey;
+  ul {
+    margin: 0;
+    list-style-type: none;
+    padding-left: 0;
   }
 
-  input[type='radio'] {
-    margin-right: 1em;
-    margin-top: -10px;
+  li {
+    margin-bottom: 0.33rem;
+    padding-left: 0.33rem;
+    border-left: 1.33rem #cd0000 solid;
+  }
+
+  a {
+    color: black;
   }
 `
+
+const redText = css`
+  display: block;
+  color: #cd0000;
+`
+
+const validate = values => {
+  let errors = {}
+  if (!values.notEmpty) {
+    errors.notEmpty = true
+  }
+
+  if (
+    isNaN(values.number) ||
+    isNaN(parseInt(values.number, 10)) // this one catches some edge cases (ie, booleans, empty strings)
+  ) {
+    errors.number = true
+  }
+  return Object.keys(errors).length ? errors : null
+}
+
+const errorList = errors => (
+  <div>
+    <h2>error: you are bad at forms</h2>
+    <ul>
+      {errors.notEmpty ? (
+        <li>
+          <a href="#notEmpty">NOT EMPTY cannot be empty</a>
+        </li>
+      ) : (
+        ''
+      )}
+      {errors.number ? (
+        <li>
+          <a href="#number">NUMBER must be a number</a>
+        </li>
+      ) : (
+        ''
+      )}
+    </ul>
+  </div>
+)
 
 class Form extends Component {
   constructor(props) {
     super(props)
-    this.handleChangeRadio = this.handleChangeRadio.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)
 
-    let { store: { form: { themeName } = {} } = {} } = props.context
+    let {
+      store: { form: { notEmpty = '', number = '' } = {} } = {},
+    } = props.context
+
+    let errors = null
+
+    // only run this if there's a location.search so that
+    // we know for sure they pressed "submit"
+    if (props.location.search) {
+      errors = validate({ notEmpty, number })
+    }
 
     this.state = {
-      themeName: themeName || '',
+      values: {
+        notEmpty: errors && errors.notEmpty ? '' : notEmpty,
+        number: errors && errors.number ? '' : number,
+      },
+      errors,
     }
   }
 
-  handleChangeRadio(e) {
-    this.setState({
-      themeName: e.target.value,
-    })
+  handleInputChange(e) {
+    let newValue = { [e.target.name]: e.target.value }
+    this.setState(state => ({ values: { ...state.values, ...newValue } }))
   }
 
   render() {
     const { setStore } = this.props.context
+    const { errors } = this.state
 
     return (
       <Layout>
+        <Helmet>
+          <title>FORM</title>
+        </Helmet>
+
         <form className={form}>
-          <Box>
+          <ThemeBlock>
             <h1>form</h1>
-          </Box>
-          <fieldset>
-            <legend>theme colour</legend>
-            <label>
-              <input
-                type="radio"
-                name="themeName"
-                value="dark"
-                onChange={this.handleChangeRadio}
-                checked={this.state.themeName === 'dark'}
-              />DARK
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="themeName"
-                value="light"
-                onChange={this.handleChangeRadio}
-                checked={this.state.themeName === 'light'}
-              />LIGHT
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="themeName"
-                value="monochrome"
-                onChange={this.handleChangeRadio}
-                checked={this.state.themeName === 'monochrome'}
-              />MONOCHROME
-            </label>
-          </fieldset>
+          </ThemeBlock>
+          <div
+            id="submit-error"
+            className={errorStyles}
+            tabIndex="-1"
+            ref={errorContainer => {
+              this.errorContainer = errorContainer
+            }}
+          >
+            {errors ? errorList(errors) : ''}
+          </div>
+
+          <label>
+            NOT EMPTY{' '}
+            {errors && errors.notEmpty ? (
+              <span className={redText}>cannot be empty</span>
+            ) : (
+              ''
+            )}
+            <input
+              id="notEmpty"
+              name="notEmpty"
+              type="text"
+              onChange={this.handleInputChange}
+              value={this.state.values.notEmpty}
+            />
+          </label>
+          <label>
+            NUMBER{' '}
+            {errors && errors.number ? (
+              <span className={redText}>must be a number</span>
+            ) : (
+              ''
+            )}
+            <input
+              id="number"
+              name="number"
+              type="text"
+              onChange={this.handleInputChange}
+              value={this.state.values.number}
+            />
+          </label>
           <button
             onClick={e => {
               e.preventDefault()
-              setStore(this.props.match.path.slice(1), this.state)
+              let errors = validate(this.state.values)
+              this.setState({ errors: errors })
+
+              if (!errors) {
+                setStore(this.props.match.path.slice(1), this.state.values)
+              } else {
+                this.errorContainer.focus()
+              }
             }}
           >
             submit
@@ -104,6 +192,7 @@ class Form extends Component {
 Form.propTypes = {
   ...contextPropTypes,
   match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 export default withProvider(withContext(Form))
