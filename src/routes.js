@@ -15,24 +15,24 @@ export default [
     path: '/about',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./pages/About'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
+      loader: () => import('./pages/About'),
+      Placeholder: () => <div>...LOADING...</div>,
     }),
   },
   {
     path: '/form',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./pages/Form'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
+      loader: () => import('./pages/Form'),
+      Placeholder: () => <div>...LOADING...</div>,
     }),
   },
   {
     path: '/validation',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./pages/Validation'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
+      loader: () => import('./pages/Validation'),
+      Placeholder: () => <div>...LOADING...</div>,
     }),
   },
 ]

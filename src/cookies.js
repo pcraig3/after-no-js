@@ -32,7 +32,7 @@ export const getStoreCookie = cookies => {
         ? JSON.parse(cookie)
         : JSON.parse(cookieEncrypter.decryptCookie(cookie, { key: SECRET }))
 
-    console.log('found cookie! ', cookie)
+    /* console.log('found cookie! ', cookie) */
   }
   return cookie
 }
@@ -49,7 +49,7 @@ export const setSSRCookie = (req, res, match) => {
     let newCookie = { [path]: query }
     let cookie = { ...prevCookie, ...newCookie }
 
-    console.log('set cookie! ', cookie)
+    /* console.log('set cookie! ', cookie) */
     setStoreCookie(res.cookie.bind(res), cookie, {
       expires: FIVE_MINUTES,
     })

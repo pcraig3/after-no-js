@@ -19,12 +19,9 @@ server
     return res.send('no more cookies 🍪')
   })
   .get('/*', async (req, res) => {
-    //res.cookie('me', { firstName: 'paul', lastName: 'craig' })
-
-    // Cookies that have not been signed
-    console.log('Regular Cookies')
-    console.log(req.cookies)
-    console.log('///')
+    // console.log('Request Cookies')
+    // console.log(req.cookies)
+    // console.log('---')
 
     const customRenderer = node => ({
       html: renderStylesToString(renderToString(node)),
@@ -41,6 +38,7 @@ server
       })
       res.send(html)
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error)
       res.json(error)
     }

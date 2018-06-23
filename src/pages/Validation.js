@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { contextPropTypes } from '../context'
 import { css } from 'react-emotion'
 import withProvider from '../withProvider'
 import withContext from '../withContext'
@@ -181,6 +183,11 @@ class Validation extends Component {
       </Layout>
     )
   }
+}
+Validation.propTypes = {
+  ...contextPropTypes,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 export default withProvider(withContext(Validation))

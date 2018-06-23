@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Cookies from 'js-cookie'
 import { setStoreCookie, getStoreCookie, setSSRCookie } from './cookies'
 import { contextDefault, Context } from './context'
 
 function withProvider(WrappedComponent) {
-  return class extends Component {
+  class WithProvider extends Component {
     static async getInitialProps({ res, req, match }) {
       let initStore =
         setSSRCookie(req, res, match) ||
@@ -44,7 +45,7 @@ function withProvider(WrappedComponent) {
             },
           }),
           () => {
-            console.log('setting a cookie! ', this.state.context.store)
+            /* console.log('setting a cookie! ', this.state.context.store) */
             setStoreCookie(Cookies.set.bind(Cookies), this.state.context.store)
           },
         )
@@ -64,7 +65,7 @@ function withProvider(WrappedComponent) {
 
     render() {
       // don't pass in the context as props -- we're passing the state instead
-      const { context, ...props } = this.props
+      const { context, ...props } = this.props // eslint-disable-line no-unused-vars
       return (
         <Context.Provider value={this.state.context}>
           <WrappedComponent {...props} />
@@ -72,6 +73,13 @@ function withProvider(WrappedComponent) {
       )
     }
   }
+  WithProvider.propTypes = {
+    context: PropTypes.shape({
+      store: PropTypes.object.isRequired,
+      setStore: null,
+    }),
+  }
+  return WithProvider
 }
 
 export default withProvider

@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import withContext from './withContext'
-import { themes } from './context'
+import { themes, contextPropTypes } from './context'
 
 const Box = ({ children, context }) => {
   let { store: { form: { themeName } = {} } = {} } = context
@@ -16,6 +17,10 @@ const Box = ({ children, context }) => {
       {children ? children : theme.name || 'undefined'}
     </div>
   )
+}
+Box.propTypes = {
+  ...contextPropTypes,
+  children: PropTypes.any,
 }
 
 export default withContext(Box)

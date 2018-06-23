@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { contextPropTypes } from '../context'
 import { css } from 'react-emotion'
 import withProvider from '../withProvider'
 import withContext from '../withContext'
@@ -98,6 +100,10 @@ class Form extends Component {
       </Layout>
     )
   }
+}
+Form.propTypes = {
+  ...contextPropTypes,
+  match: PropTypes.object.isRequired,
 }
 
 export default withProvider(withContext(Form))

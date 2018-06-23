@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { contextPropTypes } from '../context'
 import { Helmet } from 'react-helmet'
 import withProvider from '../withProvider'
 import withContext from '../withContext'
@@ -29,5 +30,6 @@ class About extends Component {
     )
   }
 }
+About.propTypes = contextPropTypes
 
 export default withProvider(withContext(About))
