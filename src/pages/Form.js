@@ -8,6 +8,7 @@ import withContext from '../withContext'
 import Layout from '../Layout'
 import ThemeBlock from '../ThemeBlock'
 import { form } from './Theme'
+import validation from '../validation'
 
 const errorStyles = css`
   margin-bottom: 1.33rem;
@@ -53,21 +54,6 @@ const redText = css`
   color: #cd0000;
 `
 
-const validate = values => {
-  let errors = {}
-  if (!values.notEmpty) {
-    errors.notEmpty = true
-  }
-
-  if (
-    isNaN(values.number) ||
-    isNaN(parseInt(values.number, 10)) // this one catches some edge cases (ie, booleans, empty strings)
-  ) {
-    errors.number = true
-  }
-  return Object.keys(errors).length ? errors : null
-}
-
 const ErrorList = ({ errors }) => (
   <div>
     <h2 className="error">error: you are bad at forms</h2>
@@ -98,16 +84,22 @@ class Form extends Component {
     super(props)
     this.handleInputChange = this.handleInputChange.bind(this)
 
+    // this really isn't ideal
+    this.validate =
+      validation[this.props.match.path.slice(1)].validate || (() => null)
+
     let {
       store: { form: { notEmpty = '', number = '' } = {} } = {},
     } = props.context
 
-    let errors = null
+    let errors = null,
+      success = null
 
     // only run this if there's a location.search so that
     // we know for sure they pressed "submit"
     if (props.location.search) {
-      errors = validate({ notEmpty, number })
+      errors = this.validate({ notEmpty, number })
+      success = !errors
     }
 
     this.state = {
@@ -116,7 +108,7 @@ class Form extends Component {
         number: errors && errors.number ? '' : number,
       },
       errors,
-      success: null,
+      success,
     }
   }
 
@@ -188,7 +180,7 @@ class Form extends Component {
           <button
             onClick={e => {
               e.preventDefault()
-              let errors = validate(this.state.values)
+              let errors = this.validate(this.state.values)
               this.setState({ errors: errors, success: !errors })
 
               if (!errors) {

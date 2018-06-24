@@ -1,8 +1,23 @@
 import cookieEncrypter from 'cookie-encrypter'
+import validation from './validation'
 
 const FIVE_MINUTES = new Date(new Date().getTime() + 5 * 60 * 1000)
 
 export const SECRET = 'Immediate convocation of a Party'
+
+const _whitelist = ({ query, fields }) => {
+  /* filter a dict by whitelisted keys
+  https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
+  */
+  return Object.keys(query)
+    .filter(key => fields.includes(key))
+    .reduce((obj, key) => {
+      return {
+        ...obj,
+        [key]: query[key],
+      }
+    }, {})
+}
 
 export const setStoreCookie = (setCookieFunc, cookie, options = {}) => {
   if (
@@ -39,13 +54,29 @@ export const getStoreCookie = cookies => {
 
 export const setSSRCookie = (req, res, match) => {
   let { query } = req
+  // match.path === "/about" or similar
+  let path = match.path.slice(1)
+  let fields = [],
+    validate = () => null
 
-  if (
-    Object.keys(query).length // if there is a query (this means people can arbitrarily set cookies)
-  ) {
+  if (validation && validation[path] && typeof validation[path] === 'object') {
+    fields = validation[path].fields || fields
+    validate = validation[path].validate || validate
+  }
+
+  // if there are no fields explicitly defined for this page, don't save anything
+  if (Object.keys(query).length && fields.length) {
+    // whitelist query keys so that arbitrary keys aren't saved to the store
+    query = fields ? _whitelist({ query, fields }) : query
+
+    // reset values that don't pass validation
+    let errors = validate(query)
+    Object.keys(errors || {}).forEach(field => {
+      query[field] = ''
+    })
+
+    // create new cookie by merging with previous values
     let prevCookie = getStoreCookie(req.cookies)
-    // match.path === "/about" or similar
-    let path = match.path.slice(1)
     let newCookie = { [path]: query }
     let cookie = { ...prevCookie, ...newCookie }
 
