@@ -1,5 +1,4 @@
 import cookieEncrypter from 'cookie-encrypter'
-import validation from './validation'
 
 const FIVE_MINUTES = new Date(new Date().getTime() + 5 * 60 * 1000)
 
@@ -52,20 +51,14 @@ export const getStoreCookie = cookies => {
   return cookie
 }
 
-export const setSSRCookie = (req, res, match) => {
+export const setSSRCookie = (req, res, match, fields = [], validate = null) => {
   let { query } = req
-  // match.path === "/about" or similar
-  let path = match.path.slice(1)
-  let fields = [],
-    validate = () => null
 
-  if (validation && validation[path] && typeof validation[path] === 'object') {
-    fields = validation[path].fields || fields
-    validate = validation[path].validate || validate
-  }
-
-  // if there are no fields explicitly defined for this page, don't save anything
-  if (Object.keys(query).length && fields.length) {
+  if (
+    Object.keys(query).length && // a query was submitted
+    fields.length && // there are fields explicitly defined for the page
+    typeof validate === 'function' // there is a validate function passed-in
+  ) {
     // whitelist query keys so that arbitrary keys aren't saved to the store
     query = fields ? _whitelist({ query, fields }) : query
 
@@ -75,9 +68,12 @@ export const setSSRCookie = (req, res, match) => {
       query[field] = ''
     })
 
-    // create new cookie by merging with previous values
     let prevCookie = getStoreCookie(req.cookies)
+    // match.path === "/about" or similar
+    let path = match.path.slice(1)
     let newCookie = { [path]: query }
+
+    // create new cookie by merging with previous values
     let cookie = { ...prevCookie, ...newCookie }
 
     /* console.log('set cookie! ', cookie) */

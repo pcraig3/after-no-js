@@ -33,6 +33,18 @@ export const form = css`
 `
 
 class Theme extends Component {
+  static get fields() {
+    return ['themeName']
+  }
+
+  static validate(values) {
+    let errors = {}
+    if (!['light', 'dark', 'monochrome'].includes(values.themeName)) {
+      errors.themeName = true
+    }
+    return Object.keys(errors).length ? errors : false
+  }
+
   constructor(props) {
     super(props)
     this.handleChangeRadio = this.handleChangeRadio.bind(this)
@@ -111,4 +123,7 @@ Theme.propTypes = {
   match: PropTypes.object.isRequired,
 }
 
-export default withProvider(withContext(Theme))
+export default withProvider(withContext(Theme), {
+  fields: Theme.fields,
+  validate: Theme.validate,
+})
