@@ -123,7 +123,4 @@ Theme.propTypes = {
   match: PropTypes.object.isRequired,
 }
 
-export default withProvider(withContext(Theme), {
-  fields: Theme.fields,
-  validate: Theme.validate,
-})
+export default withProvider(withContext(Theme))

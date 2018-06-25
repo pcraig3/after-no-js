@@ -5,7 +5,9 @@
   "homepage": "https://github.com/pcraig3/after-no-js",
   "license": "MIT",
   "author": "Paul Craig",
-  "engines" : { "node" : ">=8" },
+  "engines": {
+    "node": ">=8"
+  },
   "scripts": {
     "dev": "razzle start",
     "build": "razzle build",
@@ -20,6 +22,7 @@
     "emotion": "^9.2.3",
     "emotion-server": "^9.2.3",
     "express": "^4.16.2",
+    "hoist-non-react-statics": "^2.5.5",
     "js-cookie": "^2.2.0",
     "prop-types": "^15.6.2",
     "razzle": "^2.1.0",

@@ -221,7 +221,4 @@ Form.propTypes = {
   location: PropTypes.object.isRequired,
 }
 
-export default withProvider(withContext(Form), {
-  fields: Form.fields,
-  validate: Form.validate,
-})
+export default withProvider(withContext(Form))

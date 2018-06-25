@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { Component } from 'react'
+import hoistNonReactStatics from 'hoist-non-react-statics'
 import { Context } from './context'
 
-// This function takes a component...
-export function withContext(Component) {
-  // ...and returns another component...
-  return function ContextComponent(props) {
-    // ... and renders the wrapped component with the context theme!
-    // Notice that we pass through any additional props as well
-    return (
-      <Context.Consumer>
-        {context => <Component {...props} context={context} />}
-      </Context.Consumer>
-    )
+function withContext(WrappedComponent) {
+  class WithContext extends Component {
+    static get displayName() {
+      let wrappedComponentDisplayName =
+        WrappedComponent.displayName || WrappedComponent.name || 'Component'
+      return `withContext(${wrappedComponentDisplayName})`
+    }
+
+    render() {
+      return (
+        <Context.Consumer>
+          {context => <WrappedComponent {...this.props} context={context} />}
+        </Context.Consumer>
+      )
+    }
   }
+
+  // Make sure we preserve any custom statics on the original component.
+  return hoistNonReactStatics(WithContext, WrappedComponent, {})
 }
 
 export default withContext

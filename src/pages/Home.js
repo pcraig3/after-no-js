@@ -33,6 +33,7 @@ class Home extends Component {
             {[
               'save form values to global state in a fairly generic way between pages',
               'easily do form validation stuff (validation logic, on-screen errors, etc.)',
+              'whitelist saveable values on a per-page basis',
               'preserve your `this.state` even after doing a hard refresh',
               'turn JS on or off at any point in the flow without losing data',
               'wow your friends',

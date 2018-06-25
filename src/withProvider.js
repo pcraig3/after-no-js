@@ -4,11 +4,17 @@ import Cookies from 'js-cookie'
 import { setStoreCookie, getStoreCookie, setSSRCookie } from './cookies'
 import { contextDefault, Context } from './context'
 
-function withProvider(WrappedComponent, { fields, validate } = {}) {
+function withProvider(WrappedComponent) {
   class WithProvider extends Component {
     static async getInitialProps({ res, req, match }) {
       let initStore =
-        setSSRCookie(req, res, match, fields, validate) ||
+        setSSRCookie(
+          req,
+          res,
+          match,
+          WrappedComponent.fields,
+          WrappedComponent.validate,
+        ) ||
         getStoreCookie(req.cookies) ||
         contextDefault.store
 
