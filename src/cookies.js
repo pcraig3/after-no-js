@@ -41,10 +41,14 @@ export const getStoreCookie = cookies => {
 
   if (cookie) {
     /* Cookie will only be encryped when NODE_ENV is *not* 'development' */
-    cookie =
-      process.env.NODE_ENV === 'development'
-        ? JSON.parse(cookie)
-        : JSON.parse(cookieEncrypter.decryptCookie(cookie, { key: SECRET }))
+    try {
+      cookie =
+        process.env.NODE_ENV === 'development'
+          ? JSON.parse(cookie)
+          : JSON.parse(cookieEncrypter.decryptCookie(cookie, { key: SECRET }))
+    } catch (e) {
+      return false
+    }
 
     /* console.log('found cookie! ', cookie) */
   }
@@ -68,7 +72,7 @@ export const setSSRCookie = (req, res, match, fields = [], validate = null) => {
       query[field] = ''
     })
 
-    let prevCookie = getStoreCookie(req.cookies)
+    let prevCookie = getStoreCookie(req.cookies) || {}
     // match.path === "/about" or similar
     let path = match.path.slice(1)
     let newCookie = { [path]: query }
