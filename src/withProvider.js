@@ -23,16 +23,19 @@ const _whitelist = ({ val, fields }) => {
 function withProvider(WrappedComponent) {
   class WithProvider extends Component {
     static async getInitialProps({ res, req, match }) {
-      let initStore =
-        setSSRCookie(
-          req,
-          res,
-          match,
-          WrappedComponent.fields,
-          WrappedComponent.validate,
-        ) ||
-        getStoreCookie(req.cookies) ||
-        contextDefault.store
+      let { query } = req
+      let prevCookie = getStoreCookie(req.cookies)
+      let newCookie
+
+      if (Object.keys(query).length) {
+        let { key, val } = WithProvider.returnKeyAndValue(query, match)
+        val = WithProvider.validateCookie(key, val)
+        if (val) {
+          newCookie = setSSRCookie(res, key, val, prevCookie)
+        }
+      }
+
+      let initStore = newCookie || prevCookie || contextDefault.store
 
       return {
         context: {
@@ -105,6 +108,29 @@ function withProvider(WrappedComponent) {
         errors.language = true
       }
       return Object.keys(errors).length ? errors : false
+    }
+
+    static returnKeyAndValue(query, match) {
+      if (!Object.keys(query).length) {
+        return { key: undefined, val: undefined }
+      }
+
+      /*
+      return the first matching query key that exists in the global fields
+      */
+      let queryKeys = Object.keys(query)
+      for (let i = 0; i < queryKeys.length; i++) {
+        let queryKey = queryKeys[i]
+        for (let j = 0; j < WithProvider.globalFields.length; j++) {
+          if (queryKey === WithProvider.globalFields[j]) {
+            return { key: queryKey, val: query[queryKey] }
+          }
+        }
+      }
+
+      // match.path === "/about" or similar
+      let key = match.path.slice(1)
+      return { key, val: query }
     }
 
     static validateCookie(key, val = null) {

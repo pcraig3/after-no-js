@@ -28,6 +28,56 @@ describe('WithProvider', () => {
     })
   })
 
+  describe('.returnKeyAndValue()', () => {
+    const WithProvider = withProvider(FakeComponentEmpty)
+    let match = { path: '/about' }
+
+    it('undefined key and val when no query passed in', () => {
+      let { key, val } = WithProvider.returnKeyAndValue({}, match)
+      expect(key).toBe(undefined)
+      expect(val).toBe(undefined)
+    })
+
+    it('"language" key and "en" val when global field passed in', () => {
+      let { key, val } = WithProvider.returnKeyAndValue(
+        { language: 'en' },
+        match,
+      )
+      expect(key).toBe('language')
+      expect(val).toBe('en')
+    })
+
+    it('"language" key and "portuguese" val when global field passed in', () => {
+      // ie, it's not running the validateCookie function
+      let { key, val } = WithProvider.returnKeyAndValue(
+        { language: 'portuguese' },
+        match,
+      )
+      expect(key).toBe('language')
+      expect(val).toBe('portuguese')
+    })
+
+    it('"language" key and "en" val when global field passed in as well as other keys', () => {
+      // other fields will be ignored
+      let { key, val } = WithProvider.returnKeyAndValue(
+        { language: 'en', field: 'value' },
+        match,
+      )
+      expect(key).toBe('language')
+      expect(val).toBe('en')
+    })
+
+    it('path key and query value when no global key exists ', () => {
+      // other fields will be ignored
+      let { key, val } = WithProvider.returnKeyAndValue(
+        { field: 'value' },
+        match,
+      )
+      expect(key).toBe('about')
+      expect(val).toEqual({ field: 'value' })
+    })
+  })
+
   describe('.validateCookie() with global field', () => {
     const WithProvider = withProvider(FakeComponentEmpty)
 
