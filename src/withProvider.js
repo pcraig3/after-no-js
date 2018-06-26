@@ -49,15 +49,9 @@ function withProvider(WrappedComponent) {
       super(props)
 
       this.setStore = (key, obj = null) => {
-        if (typeof key !== 'string') {
-          throw new Error('setStore: `key` must be a string value')
-        }
-        if (
-          obj === null || // if obj is null
-          typeof obj !== 'object' || // if obj is _not_ an object
-          Object.keys(obj).length === 0 // if obj is empty
-        ) {
-          throw new Error('setStore: `obj` must be a non-empty object')
+        obj = WithProvider.validateCookie(key, obj)
+        if (!obj) {
+          return
         }
 
         let newState = { [key]: obj }

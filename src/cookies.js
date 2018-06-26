@@ -5,14 +5,6 @@ const inTenMinutes = () => new Date(new Date().getTime() + 10 * 60 * 1000)
 export const SECRET = 'Immediate convocation of a Party'
 
 export const setStoreCookie = (setCookieFunc, cookie, options = {}) => {
-  if (
-    cookie === null || // if obj is null
-    typeof cookie !== 'object' || // if obj is _not_ an object
-    Object.keys(cookie).length === 0 // if obj is empty
-  ) {
-    throw new Error('setStoreCookie: `cookie` must be a non-empty object')
-  }
-
   cookie = cookieEncrypter.encryptCookie(JSON.stringify(cookie), {
     key: SECRET,
   })
