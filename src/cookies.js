@@ -1,6 +1,6 @@
 import cookieEncrypter from 'cookie-encrypter'
 
-const FIVE_MINUTES = new Date(new Date().getTime() + 5 * 60 * 1000)
+const inTenMinutes = () => new Date(new Date().getTime() + 10 * 60 * 1000)
 
 export const SECRET = 'Immediate convocation of a Party'
 
@@ -31,7 +31,11 @@ export const setStoreCookie = (setCookieFunc, cookie, options = {}) => {
     key: SECRET,
   })
 
-  setCookieFunc('store', cookie, options)
+  let expires = {
+    expires: inTenMinutes(),
+  }
+
+  setCookieFunc('store', cookie, { ...expires, ...options })
 }
 
 export const getStoreCookie = cookies => {
@@ -78,9 +82,7 @@ export const setSSRCookie = (req, res, match, fields = [], validate = null) => {
     let cookie = { ...prevCookie, ...newCookie }
 
     /* console.log('set cookie! ', cookie) */
-    setStoreCookie(res.cookie.bind(res), cookie, {
-      expires: FIVE_MINUTES,
-    })
+    setStoreCookie(res.cookie.bind(res), cookie)
     return cookie
   }
   return false
