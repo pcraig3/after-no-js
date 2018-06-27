@@ -36,7 +36,10 @@ server
         assets,
         document: MyDocument,
       })
-      res.send(html)
+
+      return res.locals.redirect
+        ? res.redirect(res.locals.redirect)
+        : res.send(html)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error)

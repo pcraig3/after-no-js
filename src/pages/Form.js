@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 import { contextPropTypes } from '../context'
 import { css } from 'react-emotion'
 import withProvider from '../withProvider'
@@ -85,6 +86,10 @@ class Form extends Component {
   */
   static get fields() {
     return ['notEmpty', 'number']
+  }
+
+  static get redirect() {
+    return '/values'
   }
 
   static validate(values) {
@@ -200,13 +205,17 @@ class Form extends Component {
             />
           </label>
           <button
-            onClick={e => {
+            onClick={async e => {
               e.preventDefault()
               let errors = Form.validate(this.state.values)
-              this.setState({ errors: errors, success: !errors })
+              await this.setState({ errors: errors, success: !errors })
 
               if (!errors) {
-                setStore(this.props.match.path.slice(1), this.state.values)
+                await setStore(
+                  this.props.match.path.slice(1),
+                  this.state.values,
+                )
+                await this.props.history.push(Form.redirect)
               } else {
                 this.errorContainer.focus()
               }
@@ -215,6 +224,10 @@ class Form extends Component {
             submit
           </button>
         </form>
+        <p>
+          will redirect to <Link to="/values">/values</Link> on a successful
+          submit
+        </p>
       </Layout>
     )
   }
