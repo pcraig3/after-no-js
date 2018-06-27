@@ -23,7 +23,7 @@ When our app gets a request,
 
 1. It starts in [server.js](https://github.com/pcraig3/after-no-js/blob/master/src/server.js#L21), it has access to the `res` and `req` parameters, and it passes in a Document that we've defined.
 
-2. Next, it will pass through the [`getInitialProps`](https://github.com/pcraig3/after-no-js/blob/master/src/withProvider.js#L9) function defined in `withProvider`. From here, we can do some logic with `res` and `req`, and we can pass things to our constructor by returning them. ([Here is a simple example of how to pass data using `getInitialProps`](https://github.com/jaredpalmer/after.js#data-fetching)).
+2. Next, it will pass through the [`getInitialProps`](https://github.com/pcraig3/after-no-js/blob/master/src/withProvider.js#L9) function defined in `withProvider`. From here, we can do some logic with `res` and `req` -- for example, we can set cookies using query parameters -- and we can pass things to our constructor by returning them. ([Here is a simple example of how to pass data using `getInitialProps`](https://github.com/jaredpalmer/after.js#data-fetching)).
 
    1. Note that [we can't pass through functions or Date objects](https://github.com/zeit/next.js/issues/3536) or anything because our return value gets run through `JSON.stringify` -- we can only send back objects and strings.)
 
@@ -32,8 +32,6 @@ When our app gets a request,
 4. Next, we will be in our page component constructor. So, if we are on `/form`, then our  [`Form.constructor`](https://github.com/pcraig3/after-no-js/blob/master/src/pages/Form.js#L105) will run. Since [`Form` is wrapped with a `Context.Container`](https://github.com/pcraig3/after-no-js/blob/master/src/pages/Form.js#L224), it will have access to the [`context` that we set as the `withProvider` state](https://github.com/pcraig3/after-no-js/blob/master/src/withProvider.js#L76).
 
 5. Lastly, we will `render` out the HTML.
-
-
 
 ## yes-js requests
 

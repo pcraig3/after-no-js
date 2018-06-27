@@ -2,10 +2,13 @@
 
 JS-agnostic proof-of-concept app.
 
+#### (☞ﾟヮﾟ)☞  try it out @ [https://nojs.now.sh](https://nojs.now.sh/)
+
 Able to:
 - ✅ save form values to global state in a fairly generic way between pages
 - ✅ easily do form validation stuff (validation logic, on-screen errors, etc.)
-- ✅ whitelist saveable values on a per-page basis
+- ✅ whitelist values on a per-page basis
+- ✅ whitelist global values (ie, language settings) that can be set from any page
 - ✅ preserve your `this.state` even after doing a hard refresh
 - ✅ turn JS on or off at any point in the flow without losing data
 - ✅ wow your friends
@@ -37,7 +40,7 @@ Means we can update themes and/or locale strings and/or form values where needed
 ### No-JS
 
 I'm using encrypted cookies to store values so that they stick around between page loads.
-Updating the global state always sets a browser cookie, and global state is hydrated from browser cookies on both client and server-side refreshes so you always have your data.
+Updating the global state always sets a browser cookie (fifteen minutes ⏲), and global state is hydrated from browser cookies on both client and server-side refreshes so you always have your data.
 
 The means we can pre-populate fields, validate errors, or pass saved values to other parts of the app whether or not the client runs JavaScript.
 
@@ -47,6 +50,10 @@ The means we can pre-populate fields, validate errors, or pass saved values to o
 
 a: yes
 
+#### q: (☞ﾟヮﾟ)☞
+
+a: ☜(ﾟヮﾟ☜)
+
 #### q: why did u do this?
 
-a: pls see [previous question](https://github.com/pcraig3/after-no-js#q-wow-thats-so-cool)
+a: pls see [first question](https://github.com/pcraig3/after-no-js#q-wow-thats-so-cool)
