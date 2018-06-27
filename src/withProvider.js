@@ -15,7 +15,7 @@ const _whitelist = ({ val, fields }) => {
     .reduce((obj, key) => {
       return {
         ...obj,
-        [key]: val[key],
+        [key]: val[key], // eslint-disable-line security/detect-object-injection
       }
     }, {})
 }
@@ -114,9 +114,11 @@ function withProvider(WrappedComponent) {
       */
       let queryKeys = Object.keys(query)
       for (let i = 0; i < queryKeys.length; i++) {
-        let queryKey = queryKeys[i]
+        let queryKey = queryKeys[i] // eslint-disable-line security/detect-object-injection
         for (let j = 0; j < WithProvider.globalFields.length; j++) {
+          // eslint-disable-next-line security/detect-object-injection
           if (queryKey === WithProvider.globalFields[j]) {
+            // eslint-disable-next-line security/detect-object-injection
             return { key: queryKey, val: query[queryKey] }
           }
         }
@@ -176,7 +178,7 @@ function withProvider(WrappedComponent) {
         // clear values that don't pass validation
         let errors = validate(val)
         Object.keys(errors || {}).forEach(field => {
-          val[field] = ''
+          val[field] = '' // eslint-disable-line security/detect-object-injection
         })
 
         // return the sanitised val
