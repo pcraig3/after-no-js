@@ -2,7 +2,9 @@ import cookieEncrypter from 'cookie-encrypter'
 
 const inTenMinutes = () => new Date(new Date().getTime() + 10 * 60 * 1000)
 
-export const SECRET = 'Immediate convocation of a Party'
+export const SECRET =
+  process.env.RAZZLE_COOKIE_SECRET ||
+  'Hey I just met you And this is crazy'.slice(0, 32)
 
 export const setStoreCookie = (setCookieFunc, cookie, options = {}) => {
   cookie = cookieEncrypter.encryptCookie(JSON.stringify(cookie), {
