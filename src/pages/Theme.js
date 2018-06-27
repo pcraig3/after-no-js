@@ -9,10 +9,6 @@ import Layout from '../Layout'
 import ThemeBlock from '../ThemeBlock'
 
 export const form = css`
-  button {
-    font-size: 1em;
-  }
-
   label {
     display: block;
     margin-bottom: 1em;

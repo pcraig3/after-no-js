@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import withContext from './withContext'
 import { themes, contextPropTypes } from './context'
 
-const Box = ({ children, context }) => {
+const ThemeBlock = ({ children, context }) => {
   let { store: { theme: { themeName } = {} } = {} } = context
   let theme = themes[themeName] || {}
 
@@ -18,9 +18,9 @@ const Box = ({ children, context }) => {
     </div>
   )
 }
-Box.propTypes = {
+ThemeBlock.propTypes = {
   ...contextPropTypes,
   children: PropTypes.any,
 }
 
-export default withContext(Box)
+export default withContext(ThemeBlock)

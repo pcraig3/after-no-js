@@ -113,9 +113,13 @@ class Form extends Component {
     let errors = null,
       success = null
 
-    // only run this if there's a location.search so that
-    // we know for sure they pressed "submit"
-    if (props.location.search) {
+    // only run this if there's a location.search
+    // AND at least one of our fields exists in the string somewhere
+    // so we know for sure they pressed "submit" on this page
+    if (
+      props.location.search &&
+      Form.fields.some(field => props.location.search.includes(field))
+    ) {
       errors = Form.validate({ notEmpty, number })
       success = !errors
     }
