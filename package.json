@@ -8,6 +8,11 @@
   "engines": {
     "node": ">=8"
   },
+  "now": {
+    "alias": "nojs",
+    "dotenv": ".env.production",
+    "public": true
+  },
   "scripts": {
     "dev": "razzle start",
     "build": "razzle build",
