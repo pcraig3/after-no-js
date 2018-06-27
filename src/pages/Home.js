@@ -37,21 +37,14 @@ class Home extends Component {
               'whitelist global values (ie, language settings) that can be set from any page',
               'preserve your `this.state` even after doing a hard refresh',
               'turn JS on or off at any point in the flow without losing data',
-              'wow your friends',
+              'redirect after a successful submit with or without JS',
+              'wow your existing friends',
+              'help you make _more_ friends',
             ].map((v, i) => (
               <li key={i}>
                 <Check /> {v}
               </li>
             ))}
-          </ul>
-          <p>Still checking out:</p>
-          <ul>
-            <li>
-              <span role="img" aria-label="thinking face">
-                🤔
-              </span>{' '}
-              is it possible to redirect after a successful submit without JS?
-            </li>
           </ul>
         </div>
       </Layout>
