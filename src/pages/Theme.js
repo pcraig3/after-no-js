@@ -38,7 +38,7 @@ class Theme extends Component {
     if (!['light', 'dark', 'monochrome'].includes(values.themeName)) {
       errors.themeName = true
     }
-    return Object.keys(errors).length ? errors : false
+    return errors
   }
 
   constructor(props) {

@@ -104,7 +104,7 @@ class Form extends Component {
     ) {
       errors.number = true
     }
-    return Object.keys(errors).length ? errors : false
+    return errors
   }
 
   constructor(props) {
@@ -126,6 +126,7 @@ class Form extends Component {
       Form.fields.some(field => props.location.search.includes(field))
     ) {
       errors = Form.validate({ notEmpty, number })
+      errors = Object.keys(errors).length ? errors : false
       success = !errors
     }
 
@@ -208,6 +209,7 @@ class Form extends Component {
             onClick={async e => {
               e.preventDefault()
               let errors = Form.validate(this.state.values)
+              errors = Object.keys(errors).length ? errors : false
               await this.setState({ errors: errors, success: !errors })
 
               if (!errors) {
