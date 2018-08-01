@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Cookies from 'js-cookie'
 import { setStoreCookie, getStoreCookie, setSSRCookie } from './cookies'
 import { contextDefault, Context } from './context'
+import { trimInput } from './utils/cleanInput'
 
 const _whitelist = ({ val, fields }) => {
   /*
@@ -27,8 +28,11 @@ function withProvider(WrappedComponent) {
       let prevCookie = getStoreCookie(req.cookies)
       let newCookie
 
+      // if a query string exists
       if (Object.keys(query).length) {
         let { key, val } = WithProvider.returnKeyAndValue(query, match)
+        // if _any_ valid values exist, this returns a whitelisted + validated object
+        // else false
         val = WithProvider.validateCookie(key, val)
         if (val) {
           newCookie = setSSRCookie(res, key, val, prevCookie)
@@ -200,6 +204,8 @@ function withProvider(WrappedComponent) {
 
         // whitelist query keys so that arbitrary keys aren't saved to the store
         val = _whitelist({ val, fields })
+
+        val = trimInput(val)
 
         // clear values that don't pass validation
         let errors = validate(val)
