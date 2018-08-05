@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@jaredpalmer/after": "latest",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "cookie-encrypter": "^1.0.1",
     "cookie-parser": "^1.4.3",
     "emotion": "^9.2.3",
