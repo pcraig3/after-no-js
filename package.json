@@ -27,7 +27,7 @@
     "emotion": "^9.2.3",
     "emotion-server": "^9.2.3",
     "express": "^4.16.2",
-    "hoist-non-react-statics": "^2.5.5",
+    "hoist-non-react-statics": "^3.0.1",
     "js-cookie": "^2.2.0",
     "prop-types": "^15.6.2",
     "razzle": "^2.1.0",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "babel-plugin-emotion": "^9.2.0",
-    "eslint": "^4.19.1",
+    "eslint": "^5.3.0",
     "eslint-plugin-jest": "^21.17.0",
     "eslint-plugin-react": "^7.9.1",
     "react-emotion": "^9.2.3"
