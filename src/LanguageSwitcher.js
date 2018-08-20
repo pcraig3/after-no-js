@@ -8,7 +8,9 @@ class LanguageSwitcher extends Component {
     super(props)
     this.getNewLanguage = this.getNewLanguage.bind(this)
 
-    let { context: { store: { language = '' } = {} } = {} } = props
+    let {
+      context: { store: { GLOBALS: { language = '' } = {} } = {} } = {},
+    } = props
 
     this.state = {
       language,
@@ -35,7 +37,7 @@ class LanguageSwitcher extends Component {
           onClick={e => {
             e.preventDefault()
             this.setState({ language: this.getNewLanguage() }, () =>
-              setStore('language', this.state.language),
+              setStore('GLOBALS', { language: this.state.language }),
             )
           }}
         >

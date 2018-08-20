@@ -62,7 +62,7 @@ function withProvider(WrappedComponent) {
         let language = WithProvider.getDefaultLanguageFromHeader(req.headers)
         // if default language found, set a new cookie
         newCookie = language
-          ? setSSRCookie(res, 'language', language, prevCookie)
+          ? setSSRCookie(res, 'GLOBALS', { language }, prevCookie)
           : newCookie
       }
 
@@ -150,7 +150,7 @@ function withProvider(WrappedComponent) {
           // eslint-disable-next-line security/detect-object-injection
           if (queryKey === WithProvider.globalFields[j]) {
             // eslint-disable-next-line security/detect-object-injection
-            return { key: queryKey, val: query[queryKey] }
+            return { key: 'GLOBALS', val: { [queryKey]: query[queryKey] } }
           }
         }
       }
@@ -182,15 +182,17 @@ function withProvider(WrappedComponent) {
         throw new Error('validate: `key` must be a non-empty string')
       }
 
-      // check if a global setting
-      if (WithProvider.globalFields.includes(key)) {
-        // val must be a string
-        if (typeof val !== 'string' || !val.length) {
-          throw new Error('validate: `val` must be a non-empty string')
-        }
+      if (!_isNonEmptyObject(val)) {
+        throw new Error('validate: `val` must be a non-empty object')
+      }
 
+      // check if a global setting
+      if (
+        key === 'GLOBALS' &&
+        WithProvider.globalFields.includes(Object.keys(val)[0]) // get first key passed-in values
+      ) {
         // have to pass the key in as well since this value is a string
-        let errors = WithProvider.validate({ [key]: val })
+        let errors = WithProvider.validate(val)
 
         // return the value if no validation errors
         return !Object.keys(errors).length ? val : false
@@ -204,7 +206,6 @@ function withProvider(WrappedComponent) {
         fields &&
         fields.length && // there are fields explicitly defined
         typeof validate === 'function' && // there is a validate function passed-in
-        _isNonEmptyObject(val) && // val is a non-empty object
         Object.keys(val).some(k => fields.includes(k)) // at least one query param key exists in fields
       ) {
         // whitelist query keys so that arbitrary keys aren't saved to the store
