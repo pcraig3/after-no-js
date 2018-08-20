@@ -124,14 +124,25 @@ function withProvider(WrappedComponent) {
     }
 
     static get globalFields() {
-      return ['language']
+      return ['language', 'location']
     }
 
     static validate(values) {
       let errors = {}
-      if (!['en', 'fr'].includes(values.language)) {
+      if (
+        values.language && // values.language is set
+        !['en', 'fr'].includes(values.language) // language is either 'en' or 'fr'
+      ) {
         errors.language = true
       }
+
+      if (
+        values.location && // values.location is set
+        !['montreal', 'vancouver'].includes(values.location) // location is either 'montreal' or 'vancouver'
+      ) {
+        errors.location = true
+      }
+
       return errors
     }
 
