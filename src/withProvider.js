@@ -130,14 +130,14 @@ function withProvider(WrappedComponent) {
     static validate(values) {
       let errors = {}
       if (
-        values.language && // values.language is set
+        'language' in values && // values.language exists (even if set to falsey value)
         !['en', 'fr'].includes(values.language) // language is either 'en' or 'fr'
       ) {
         errors.language = true
       }
 
       if (
-        values.location && // values.location is set
+        'location' in values && // values.location exists (even if set to falsey value)
         !['montreal', 'vancouver'].includes(values.location) // location is either 'montreal' or 'vancouver'
       ) {
         errors.location = true

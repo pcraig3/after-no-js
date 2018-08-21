@@ -74,6 +74,12 @@ describe('WithProvider', () => {
         errors = WithProvider.validate({ language: 'portuguese' })
         expect(errors).toEqual({ language: true })
       })
+
+      it('returns errors for an empty language value', () => {
+        let errors
+        errors = WithProvider.validate({ language: '' })
+        expect(errors).toEqual({ language: true })
+      })
     })
 
     describe('global field "location"', () => {
@@ -89,6 +95,12 @@ describe('WithProvider', () => {
       it('returns errors for some other value in its validation method', () => {
         let errors
         errors = WithProvider.validate({ location: 'toronto' })
+        expect(errors).toEqual({ location: true })
+      })
+
+      it('returns errors for an empty location value', () => {
+        let errors
+        errors = WithProvider.validate({ location: '' })
         expect(errors).toEqual({ location: true })
       })
     })
