@@ -74,6 +74,7 @@ function withProvider(WrappedComponent) {
           store: initStore,
           setStore: contextDefault.setStore,
         },
+        post: req.method === 'POST',
       }
     }
 

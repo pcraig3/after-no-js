@@ -115,9 +115,17 @@ class Form extends Component {
       store: { form: { notEmpty = '', number = '' } = {} } = {},
     } = props.context
 
-    let errors = Form.validate({ notEmpty, number })
-    errors = Object.keys(errors).length ? errors : false
-    let success = !errors
+    let errors = null,
+      success = null
+
+    // if this is a POST, we know for sure they pressed "submit" on this page
+    // Otherwise, we would be showing error messages on the initial pageload
+    // (because the fields are empty)
+    if (props.post) {
+      errors = Form.validate({ notEmpty, number })
+      errors = Object.keys(errors).length ? errors : false
+      success = !errors
+    }
 
     this.state = {
       values: {
