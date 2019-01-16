@@ -67,7 +67,7 @@ class Theme extends Component {
           <title>THEME</title>
         </Helmet>
 
-        <form className={form}>
+        <form className={form} method="post">
           <ThemeBlock>
             <h1>theme</h1>
           </ThemeBlock>
@@ -80,7 +80,8 @@ class Theme extends Component {
                 value="dark"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'dark'}
-              />DARK
+              />
+              DARK
             </label>
             <label>
               <input
@@ -89,7 +90,8 @@ class Theme extends Component {
                 value="light"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'light'}
-              />LIGHT
+              />
+              LIGHT
             </label>
             <label>
               <input
@@ -98,7 +100,8 @@ class Theme extends Component {
                 value="monochrome"
                 onChange={this.handleChangeRadio}
                 checked={this.state.themeName === 'monochrome'}
-              />MONOCHROME
+              />
+              MONOCHROME
             </label>
           </fieldset>
           <button

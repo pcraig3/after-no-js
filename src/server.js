@@ -1,5 +1,6 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
 import { render } from '@jaredpalmer/after'
 import { renderToString } from 'react-dom/server'
 import routes from './routes'
@@ -13,15 +14,12 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .use(cookieParser())
+  .use(bodyParser.urlencoded({ extended: true }))
   .get('/clear', (req, res) => {
     res.clearCookie('store')
     return res.send('no more cookies 🍪')
   })
-  .get('/*', async (req, res) => {
-    // console.log('Request Cookies')
-    // console.log(req.cookies)
-    // console.log('---')
-
+  .all('/*', async (req, res) => {
     const customRenderer = node => ({
       html: renderStylesToString(renderToString(node)),
     })

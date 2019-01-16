@@ -38,13 +38,13 @@ export const _isNonEmptyObject = val => {
 function withProvider(WrappedComponent) {
   class WithProvider extends Component {
     static async getInitialProps({ res, req, match }) {
-      let { query } = req
+      let { body = {} } = req
       let prevCookie = getStoreCookie(req.cookies)
       let newCookie
 
       // if a query string exists
-      if (Object.keys(query).length) {
-        let { key, val } = WithProvider.returnKeyAndValue(query, match)
+      if (Object.keys(body).length) {
+        let { key, val } = WithProvider.returnKeyAndValue(body, match)
         // if _any_ valid values exist, this returns a whitelisted + validated object
         // else false
         val = WithProvider.validateCookie(key, val)
@@ -52,7 +52,7 @@ function withProvider(WrappedComponent) {
           newCookie = setSSRCookie(res, key, val, prevCookie)
 
           // add redirect if query passes validation and .redirect exists on the page component
-          if (WrappedComponent.redirect && WithProvider.validateQuery(query)) {
+          if (WrappedComponent.redirect && WithProvider.validateQuery(body)) {
             res.locals.redirect = WrappedComponent.redirect
           }
         }

@@ -9,7 +9,6 @@ import withContext from '../withContext'
 import Layout from '../Layout'
 import ThemeBlock from '../ThemeBlock'
 import { form } from './Theme'
-import { checkURLParams } from '../utils/url'
 
 const errorStyles = css`
   margin-bottom: 1.33rem;
@@ -116,21 +115,9 @@ class Form extends Component {
       store: { form: { notEmpty = '', number = '' } = {} } = {},
     } = props.context
 
-    let errors = null,
-      success = null
-
-    // only run this if there's a location.search
-    // AND at least one of our fields exists in the url keys somewhere
-    // so we know for sure they pressed "submit" on this page
-    if (
-      this.props.location.search &&
-      this.props.location.pathname === '/form' &&
-      checkURLParams(this.props.location.search, Form.fields)
-    ) {
-      errors = Form.validate({ notEmpty, number })
-      errors = Object.keys(errors).length ? errors : false
-      success = !errors
-    }
+    let errors = Form.validate({ notEmpty, number })
+    errors = Object.keys(errors).length ? errors : false
+    let success = !errors
 
     this.state = {
       values: {
@@ -157,7 +144,7 @@ class Form extends Component {
           <title>FORM</title>
         </Helmet>
 
-        <form className={form}>
+        <form className={form} method="post">
           <ThemeBlock>
             <h1>form</h1>
           </ThemeBlock>
